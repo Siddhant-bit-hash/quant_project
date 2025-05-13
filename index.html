@@ -1,684 +1,670 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.3">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Covariance Forecasting for Portfolio Risk Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00CFE8; /* Vivid Cyan */
+            --secondary-color: #A020F0; /* Electric Purple */
+            --accent-color: #F7DC6F; /* Soft Yellow Glow */
+            --bg-dark-primary: #0D1117; /* GitHub Dark Dimmed */
+            --bg-dark-secondary: #161B22; /* GitHub Dark Default */
+            --text-light: #E6EDF3;
+            --text-medium: #ADBAC7;
+            --text-dark: #768390;
+            --border-color: rgba(173, 186, 199, 0.1); /* Faint border */
+            --glow-primary-subtle: rgba(0, 207, 232, 0.3);
+            --glow-secondary-subtle: rgba(160, 32, 240, 0.25);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-dark-primary);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        #mainCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(13, 17, 23, 0.88); 
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .nav-links-container {
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            max-width: 700px; 
+            margin: 0 auto;
+            gap: 0.5rem; 
+        }
+        .nav-link {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--text-medium);
+            padding: 0.5rem 0.75rem; 
+            border-radius: 5px;
+            transition: color 0.3s ease, text-shadow 0.3s ease, background-color 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.8rem; 
+            letter-spacing: 0.8px;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color);
+            background-color: rgba(0, 207, 232, 0.08);
+            text-shadow: 0 0 5px var(--glow-primary-subtle);
+        }
+
+        .hero-section {
+            min-height: 80vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 7rem 1.5rem 3rem 1.5rem; 
+            position: relative;
+        }
+        .hero-project-title { 
+            font-family: 'Roboto Mono', monospace; 
+            font-size: 2.5rem; 
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: popIn 0.8s ease-out 0.2s forwards;
+            text-shadow: 0 0 6px var(--glow-primary-subtle);
+        }
+        .hero-subtitle-text { 
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.15rem; 
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: popIn 0.8s ease-out 0.5s forwards;
+            text-shadow: 0 0 6px var(--glow-primary-subtle);
+            max-width: 700px;
+        }
+        .hero-tagline-text { 
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-medium);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: popIn 0.8s ease-out 0.8s forwards;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: translateY(15px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .content-section {
+            padding: 3.5rem 1rem 1.5rem 1rem; 
+            position: relative; 
+        }
+        .section-title-wrapper {
+            text-align: center;
+            margin-bottom: 2.5rem; 
+        }
+        .section-title { 
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.7rem; 
+            font-weight: 500;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            display: inline-block;
+            position: relative;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            padding-bottom: 0.4rem;
+        }
+        .section-title::before { 
+            content: '>'; 
+            position: absolute;
+            left: -1.5em; 
+            color: var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.5s ease-out 0.3s;
+        }
+        .section-title::after { 
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.7s ease-out 0.4s;
+        }
+        .section-title.is-visible { opacity: 1; transform: translateY(0); }
+        .section-title.is-visible::before { opacity: 1; }
+        .section-title.is-visible::after { width: 100%; }
+
+        .data-card { 
+            background-color: rgba(22, 27, 34, 0.9); 
+            backdrop-filter: blur(8px) saturate(140%);
+            -webkit-backdrop-filter: blur(8px) saturate(140%);
+            border: 1px solid var(--border-color);
+            padding: 1.75rem; 
+            margin-bottom: 1.75rem;
+            border-radius: 8px; 
+            opacity: 0;
+            transform: perspective(800px) rotateX(-6deg) translateY(20px);
+            transform-origin: top center;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+        }
+        .data-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px var(--glow-primary-subtle), 0 6px 25px rgba(0,0,0,0.3); 
+            transform: perspective(800px) rotateX(0deg) translateY(-3px) scale(1.005);
+        }
+        .data-card.is-visible {
+            opacity: 1;
+            transform: perspective(800px) rotateX(0deg) translateY(0);
+        }
+        .data-card h3 { 
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.2rem; 
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 0.6rem; 
+        }
+         .data-card ul { list-style-type: none; padding-left: 0; margin-top: 0.6rem; }
+        .data-card ul li {
+            font-size: 0.9rem; 
+            color: var(--text-medium);
+            margin-bottom: 0.35rem;
+            padding-left: 1.3em; 
+            position: relative;
+        }
+        .data-card ul li::before { content: '»'; position: absolute; left: 0; color: var(--primary-color); font-weight: bold; }
+        .data-card p, .prose p { font-size: 0.95rem; color: var(--text-medium); margin-bottom: 1rem; }
+        .prose strong { color: var(--primary-color); }
+        .prose ul > li::before { background-color: var(--primary-color); } 
+        .prose h4 { color: var(--accent-color); font-family: 'Roboto Mono', monospace; margin-top: 1.5em;}
+
+        .tab-button { 
+            padding: 0.6rem 1.2rem;
+            margin: 0 0.25rem;
+            border-radius: 6px;
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 500;
+            font-family: 'Roboto Mono', monospace;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        .tab-button:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-dark-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px var(--glow-primary-subtle); 
+        }
+        .tab-button.active {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
+            border-color: transparent; 
+            box-shadow: 0 0 8px var(--glow-primary-subtle), 0 0 6px var(--glow-secondary-subtle); 
+        }
+        .tab-content { display: none; animation: popIn 0.5s ease-out; } 
+        .tab-content.active { display: block; }
+
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        th, td { padding: 0.75rem 0.9rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.9rem;}
+        thead th { background-color: rgba(22, 27, 34, 0.9); color: var(--primary-color); font-family: 'Roboto Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.4px; }
+        tbody tr:nth-child(even) { background-color: rgba(22, 27, 34, 0.3); }
+        tbody tr:hover { background-color: rgba(0, 207, 232, 0.04); }
+        .metric-value { color: var(--primary-color); font-weight: 500; font-size: 0.95rem; } 
+        .text-accent-green { color: #28a745; } 
+        .text-accent-red { color: #dc3545; } 
+
+        .progress-bar-container { width: 100%; background-color: rgba(13,17,23,0.5); height: 3px; position: fixed; top: 0; left: 0; z-index: 1000; }
+        .progress-bar { height: 3px; background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); width: 0%; transition: width 0.1s linear; }
+        
+        footer { text-align: center; padding: 2.5rem 1rem 1.5rem 1rem; margin-top: 2.5rem; border-top: 1px solid var(--border-color); color: var(--text-dark); font-size: 0.8rem; }
+        footer p span { font-family: 'Roboto Mono', monospace; color: var(--primary-color); }
+        
+        .img-custom-shadow {
+            box-shadow: 0 7px 20px -5px rgba(0,0,0,0.3), 0 0 10px -7px var(--glow-primary-subtle); 
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .img-custom-shadow:hover {
+            transform: scale(1.015);
+            box-shadow: 0 10px 30px -7px rgba(0,0,0,0.4), 0 0 15px -7px var(--glow-primary-subtle); 
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; border: 2px solid var(--bg-dark-primary); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }
+
+    </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Dynamic Covariance Forecasting for Portfolio Risk Management&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=Roboto+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--bg-primary: #0A0F1E;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>--bg-secondary: #121A30;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>--text-primary: #D0DFFF;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>--text-secondary: #8A97C1;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-primary: #00CFE8; /* Vivid Cyan from example - kept for primary accent */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-secondary: #A020F0; /* Electric Purple from example - for secondary accents/gradients */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-highlight: #F7DC6F; /* Soft Yellow for specific highlights */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--border-color: rgba(0, 207, 232, 0.2);<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>--card-shadow: rgba(0, 207, 232, 0.08);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--glass-bg: rgba(18, 26, 48, 0.75);<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>--glass-border: rgba(0, 207, 232, 0.2);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--glow-primary-subtle: rgba(0, 207, 232, 0.3);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--glow-secondary-subtle: rgba(160, 32, 240, 0.25);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--bg-dark-primary); /* Using a variable from your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-light); /* Using a variable from your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow-x: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.75;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>#mainCanvas { /* For the particle background from your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: -1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.main-nav {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 1000;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(13, 17, 23, 0.85); /* From your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0.75rem 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid var(--border-color); /* From your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 10px rgba(0,0,0,0.3);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.nav-links-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 700px;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 0.5rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.nav-link {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Roboto Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-medium);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0.5rem 0.75rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: color 0.3s ease, text-shadow 0.3s ease, background-color 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.8rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 0.8px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.nav-link:hover, .nav-link.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--primary-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(0, 207, 232, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-shadow: 0 0 5px var(--glow-primary-subtle); /* Minimal glow */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>min-height: 85vh;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 8rem 1.5rem 3rem 1.5rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-name {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Roboto Mono', monospace;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 2.8rem; /* Adjusted from your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-light);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 0.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: popIn 0.8s ease-out 0.2s forwards;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 1px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-shadow: 0 0 8px var(--glow-primary-subtle); /* Subtle hero glow */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-title {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.2rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--primary-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: popIn 0.8s ease-out 0.5s forwards;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-shadow: 0 0 8px var(--glow-primary-subtle); /* Subtle glow */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 700px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-tagline {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Roboto Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-medium);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: popIn 0.8s ease-out 0.8s forwards;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes popIn { /* From your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>0% { opacity: 0; transform: translateY(20px) scale(0.95); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>100% { opacity: 1; transform: translateY(0) scale(1); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.content-section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 4rem 1rem 2rem 1rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title-wrapper {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 3rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Roboto Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.8rem; /* Adjusted from your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--primary-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 1.5px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(20px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.7s ease-out, transform 0.7s ease-out;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 0.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title::before {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: '// ';<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: -2.5em;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-color); /* Yellow accent from your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.6s ease-out 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title::after {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>bottom: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 0%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 3px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: width 0.8s ease-out 0.4s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title.is-visible { opacity: 1; transform: translateY(0); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title.is-visible::before { opacity: 1; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title.is-visible::after { width: 100%; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.data-card { /* Inspired by your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(22, 27, 34, 0.88);<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px) saturate(150%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>-webkit-backdrop-filter: blur(10px) saturate(150%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--border-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 2rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: perspective(1000px) rotateX(-7deg) translateY(25px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform-origin: top center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.7s ease-out, transform 0.7s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 5px 20px rgba(0,0,0,0.3);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.data-card:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: var(--primary-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 15px var(--glow-primary-subtle), 0 6px 25px rgba(0,0,0,0.35); /* Subtle glow */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: perspective(1000px) rotateX(0deg) translateY(-4px) scale(1.01);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.data-card.is-visible {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: perspective(1000px) rotateX(0deg) translateY(0);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.data-card h3 {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Roboto Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.25rem; /* Adjusted */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--primary-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 0.75rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">         </span>.data-card ul { list-style-type: none; padding-left: 0; margin-top: 0.75rem; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.data-card ul li {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-medium);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 0.4rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 1.5em;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.data-card ul li::before { content: '»'; position: absolute; left: 0; color: var(--primary-color); font-weight: bold; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.data-card p, .prose p { font-size: 1rem; color: var(--text-medium); margin-bottom: 1rem; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.prose strong { color: var(--primary-color); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.prose ul &gt; li::before { background-color: var(--primary-color); }<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.prose h4 { color: var(--accent-color); font-family: 'Roboto Mono', monospace; margin-top: 1.5em;}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-button { /* Inspired by your example */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0.7rem 1.4rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 0.3rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: transparent;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid var(--primary-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--primary-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Roboto Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 0.5px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-button:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--primary-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--bg-dark-primary);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 10px var(--glow-primary-subtle); /* Subtle glow */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-button.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-light);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: transparent;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 10px var(--glow-primary-subtle), 0 0 8px var(--glow-secondary-subtle); /* Subtle glow */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-content { display: none; animation: popIn 0.6s ease-out; }<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-content.active { display: block; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>table { border-collapse: separate; border-spacing: 0; width: 100%; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>th, td { padding: 0.85rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>thead th { background-color: rgba(22, 27, 34, 0.9); color: var(--primary-color); font-family: 'Roboto Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>tbody tr:nth-child(even) { background-color: rgba(22, 27, 34, 0.4); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>tbody tr:hover { background-color: rgba(0, 207, 232, 0.05); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.metric-value { color: var(--primary-color); font-weight: 500; font-size: 1rem; } /* Standardized metric value size */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.text-accent-green { color: #28a745; }<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.text-accent-red { color: #dc3545; }<span class="Apple-converted-space"> </span></p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.progress-bar-container { width: 100%; background-color: rgba(13,17,23,0.6); height: 4px; position: fixed; top: 0; left: 0; z-index: 1000; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.progress-bar { height: 4px; background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); width: 0%; transition: width 0.1s linear; }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>footer { text-align: center; padding: 3rem 1rem 2rem 1rem; margin-top: 3rem; border-top: 1px solid var(--border-color); color: var(--text-dark); font-size: 0.85rem; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>footer p span { font-family: 'Roboto Mono', monospace; color: var(--primary-color); }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.img-custom-shadow {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 8px 25px -6px rgba(0,0,0,0.35), 0 0 15px -10px var(--glow-primary-subtle); /* Subtle glow */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--border-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: transform 0.3s ease, box-shadow 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.img-custom-shadow:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(1.02);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 12px 35px -8px rgba(0,0,0,0.45), 0 0 20px -10px var(--glow-primary-subtle); /* Subtle glow */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar { width: 10px; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-track { background: var(--bg-dark-primary); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 5px; border: 2px solid var(--bg-dark-primary); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;canvas id="mainCanvas"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="progress-bar-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="progress-bar" id="progressBar"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;nav class="main-nav"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="nav-links-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#challenge" class="nav-link"&gt;Challenge&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#approach" class="nav-link"&gt;Methodology&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#models" class="nav-link"&gt;Models&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#results" class="nav-link"&gt;Results&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#conclusion" class="nav-link"&gt;Conclusion&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/nav&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;header class="hero-section" id="hero"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1 class="hero-name"&gt;Dynamic Covariance Forecasting&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="hero-title"&gt;Enhancing Portfolio Risk Management via Advanced Statistical Modeling on NIFTY 50 Equities&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="hero-tagline"&gt;Historical // EWMA // GARCH-RollCorr&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="challenge" class="content-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="section-title-wrapper"&gt;&lt;h2 class="section-title"&gt;The Problem: Static Risk in Dynamic Markets&lt;/h2&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid md:grid-cols-2 gap-12 items-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="prose prose-lg text-gray-300 max-w-none"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p&gt;Effective portfolio management hinges on a precise understanding of asset interdependencies, quantified by the &lt;strong&gt;covariance matrix&lt;/strong&gt;. Traditional finance often simplifies this by assuming static covariances.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p&gt;However, financial markets are inherently dynamic:&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;Inter-asset correlations morph, often amplifying during systemic shocks.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;Volatility ebbs and flows, clustering in response to information cascades.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p&gt;Neglecting these dynamics leads to flawed risk assessments and suboptimal investment strategies. This project confronts this by exploring models that adapt to changing market conditions.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;img src="images/adj_close_prices_plot.png" alt="NIFTY 50 Stock Price Trends" class="img-custom-shadow mx-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-center text-xs text-text-dark mt-3"&gt;Price trends of selected NIFTY 50 stocks (Jan 2010 - May 2025).&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="approach" class="content-section bg-bg-dark-secondary rounded-lg py-12 my-12"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="section-title-wrapper"&gt;&lt;h2 class="section-title"&gt;Our Methodology: A Comparative Framework&lt;/h2&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="prose prose-lg text-text-medium max-w-4xl mx-auto text-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;We engineered a systematic pipeline to dissect the efficacy of three distinct covariance forecasting paradigms. The &lt;strong&gt;Global Minimum Variance (GMV)&lt;/strong&gt; portfolio strategy served as our crucible, testing how each model's forecasts translate into risk-minimization performance within the Indian equity landscape (12 selected NIFTY 50 stocks, Jan 2010 - May 2025).&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="data-card is-visible"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="!text-accent-highlight"&gt;1. Data Foundation&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm"&gt;Daily log returns, preprocessed for stationarity (ADF tests confirmed).&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="data-card is-visible"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="!text-accent-highlight"&gt;2. Covariance Engines&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm"&gt;Historical Rolling, EWMA (decay factor $\lambda = 0.94$), GARCH(1,1)-RollCorr (Student's t-dist, 60-day correlation window).&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="data-card is-visible"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="!text-accent-highlight"&gt;3. Backtesting Rig&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm"&gt;GMV portfolios, monthly rebalancing. Metrics: Returns, Vol, Sharpe, Sortino, Calmar, Drawdown, Turnover.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">             </span>&lt;div class="mt-16 text-center fade-in-section is-visible" style="transition-delay: 0.5s;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;img src="images/log_returns_timeseries.png" alt="Log Returns Volatility Clustering" class="img-custom-shadow mx-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-sm text-text-dark mt-4"&gt;Data Insight: Volatility clustering observed in daily log returns.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="models" class="content-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="section-title-wrapper"&gt;&lt;h2 class="section-title"&gt;Models Deconstructed&lt;/h2&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mb-10 flex flex-wrap justify-center gap-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="tab-button active" onclick="openTab(event, 'historical_model_tab')"&gt;Historical&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="tab-button" onclick="openTab(event, 'ewma_model_tab')"&gt;EWMA&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="tab-button" onclick="openTab(event, 'garch_model_tab')"&gt;GARCH-RollCorr&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="historical_model_tab" class="tab-content active data-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;Historical Rolling Covariance&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;Calculates sample covariance using a 60-day rolling window. Simple, but slow to adapt and gives equal weight to all past data in the window.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="ewma_model_tab" class="tab-content data-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;EWMA (Exponentially Weighted Moving Average)&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;Assigns exponentially decaying weights (decay factor lambda, $\lambda = 0.94$), prioritizing recent data. More responsive than simple rolling.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="garch_model_tab" class="tab-content data-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;GARCH-RollCorr Hybrid&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;A two-stage model: 1) Univariate GARCH(1,1) for individual asset volatilities. 2) Rolling 60-day correlation on GARCH standardized residuals. Combines $D_t R_t D_t$ (where $D_t$ is the diagonal matrix of GARCH conditional volatilities and $R_t$ is the dynamic correlation matrix) for the final covariance. Captures volatility clustering and dynamic correlations.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="results" class="content-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="section-title-wrapper"&gt;&lt;h2 class="section-title"&gt;Empirical Performance &amp; Insights&lt;/h2&gt;&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="data-card mb-10"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;GMV Portfolio: Comparative Metrics&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="overflow-x-auto mt-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;table class="min-w-full"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;thead&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th&gt;Strategy&lt;/th&gt;&lt;th&gt;Cum. Return&lt;/th&gt;&lt;th&gt;Ann. Return&lt;/th&gt;&lt;th&gt;Ann. Volatility&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th&gt;Sharpe Ratio&lt;/th&gt;&lt;th&gt;Max Drawdown&lt;/th&gt;&lt;th&gt;Sortino Ratio&lt;/th&gt;&lt;th&gt;Calmar Ratio&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/thead&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="font-medium text-text-light"&gt;Historical&lt;/td&gt;&lt;td&gt;17.5370&lt;/td&gt;&lt;td&gt;0.2304&lt;/td&gt;&lt;td&gt;0.1560&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="text-accent-green font-semibold"&gt;1.4764&lt;/td&gt;&lt;td class="text-accent-red"&gt;-0.2792&lt;/td&gt;&lt;td&gt;2.0896&lt;/td&gt;&lt;td&gt;0.8253&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="font-medium text-text-light"&gt;EWMA&lt;/td&gt;&lt;td&gt;13.4565&lt;/td&gt;&lt;td&gt;0.2130&lt;/td&gt;&lt;td&gt;0.1711&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td&gt;1.2453&lt;/td&gt;&lt;td class="text-accent-red"&gt;-0.3583&lt;/td&gt;&lt;td&gt;1.7012&lt;/td&gt;&lt;td&gt;0.5945&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="font-medium text-text-light"&gt;GARCH-RollCorr&lt;/td&gt;&lt;td&gt;14.2588&lt;/td&gt;&lt;td&gt;0.2144&lt;/td&gt;&lt;td class="text-accent-green font-semibold"&gt;0.1553&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td&gt;1.3805&lt;/td&gt;&lt;td class="text-accent-green font-semibold"&gt;-0.2365&lt;/td&gt;&lt;td&gt;1.9195&lt;/td&gt;&lt;td class="text-accent-green font-semibold"&gt;0.9063&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/table&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-xs text-text-dark mt-3 text-center"&gt;Risk-free rate assumed at 0%. Green indicates best for desirable metrics.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="data-card mb-10"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;Wealth Trajectories&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;img src="images/gmv_cumulative_returns_comparison.png" alt="Cumulative Returns Plot of GMV Strategies" class="img-custom-shadow mx-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="mt-4 text-text-medium"&gt;The GARCH-RollCorr strategy, despite not having the highest terminal wealth, exhibited superior risk control, evidenced by the smallest maximum drawdown and highest Calmar ratio. Historical model led in final returns but with greater volatility.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid md:grid-cols-2 gap-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="data-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3&gt;Portfolio Turnover&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                     </span>&lt;table class="min-w-full"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Strategy&lt;/th&gt;&lt;th&gt;Average Turnover&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;&lt;td class="font-medium text-text-light"&gt;Historical&lt;/td&gt;&lt;td class="metric-value text-sm"&gt;0.3998&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;&lt;td class="font-medium text-text-light"&gt;EWMA&lt;/td&gt;&lt;td class="metric-value text-sm"&gt;0.6323&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;&lt;td class="font-medium text-text-light"&gt;GARCH-RollCorr&lt;/td&gt;&lt;td class="metric-value text-sm"&gt;0.4615&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/table&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="mt-3 text-text-medium"&gt;EWMA showed the highest turnover, implying higher potential transaction costs. Historical was the most stable.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="data-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3&gt;Weight Allocation Dynamics&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;img src="images/GARCH_RollCorr_weights_allocation.png" alt="Example Weight Allocation for GARCH-RollCorr Strategy" class="img-custom-shadow mx-auto mb-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="mt-3 text-text-medium"&gt;The GARCH-RollCorr model (example shown) often adapted weights more dynamically, reflecting its responsiveness to changing risk estimates. Short positions were utilized by all unconstrained GMV strategies. (Note: Other weight allocation plots for Historical and EWMA strategies are available in the 'images' folder: Historical_weights_allocation.png, EWMA_weights_allocation.png).&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="conclusion" class="content-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="section-title-wrapper"&gt;&lt;h2 class="section-title"&gt;Conclusion &amp; Future Horizons&lt;/h2&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="data-card prose prose-lg text-text-medium max-w-3xl mx-auto prose-strong:text-primary-color prose-headings:text-accent-highlight prose-ul:marker:text-primary-color"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Key Takeaways&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;Model selection in dynamic covariance forecasting critically influences portfolio risk-return outcomes. The GARCH-RollCorr model emerged as a strong contender for risk-averse strategies due to its superior drawdown control and volatility management. The simpler Historical model, while achieving high returns, did so with greater risk and lower turnover.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Limitations&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;This study used unconstrained GMV portfolios and did not factor in explicit transaction costs. The GARCH-RollCorr model is a practical simplification of more complex multivariate GARCH systems.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Future Research&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Incorporate transaction costs and liquidity constraints.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Implement and compare full DCC-GARCH, BEKK, or other advanced models.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Explore machine learning for direct covariance forecasting or regime identification.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Test on different asset classes and portfolio strategies (e.g., Risk Parity).&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;footer&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;&amp;copy; &lt;span id="currentYear"&gt;&lt;/span&gt; [Your Name] - Quantitative Finance Project&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;System Status: &lt;span&gt;ONLINE&lt;/span&gt; // Data Stream: &lt;span&gt;STABLE&lt;/span&gt; // Analysis Engine: &lt;span&gt;OPTIMIZED&lt;/span&gt;&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Tab functionality</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function openTab(event, tabName) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let i, tabcontent, tabbuttons;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>tabcontent = document.getElementsByClassName("tab-content");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>for (i = 0; i &lt; tabcontent.length; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tabcontent[i].classList.remove("active");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>tabbuttons = document.getElementsByClassName("tab-button");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>for (i = 0; i &lt; tabbuttons.length; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tabbuttons[i].classList.remove("active");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const targetTab = document.getElementById(tabName);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (targetTab) {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>targetTab.classList.add("active");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (event &amp;&amp; event.currentTarget) {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                 </span>event.currentTarget.classList.add("active");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', (event) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const defaultActiveTabButton = document.querySelector('.tab-button.active');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (defaultActiveTabButton) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>// Extract tabId carefully, assuming format like "openTab(event, 'tabIdName')"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const onclickAttr = defaultActiveTabButton.getAttribute('onclick');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (onclickAttr) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const match = onclickAttr.match(/'([^']+)'/);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (match &amp;&amp; match[1]) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const tabId = match[1];</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const targetTab = document.getElementById(tabId);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>if (targetTab) {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>targetTab.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const currentYearEl = document.getElementById('currentYear');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (currentYearEl) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>currentYearEl.textContent = new Date().getFullYear();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Intersection Observer for scroll animations (inspired by your example)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const animatedElements = document.querySelectorAll('.content-section, .hero-section, .data-card, .section-title');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const observerOptions = { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 };</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const elementObserver = new IntersectionObserver((entries, observer) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>entries.forEach(entry =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (entry.isIntersecting) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>entry.target.classList.add('is-visible'); // For cards and section titles</p>
-<p class="p1"><span class="Apple-converted-space">                     </span>if (entry.target.classList.contains('fade-in-section')) { // For general sections (if you re-add this class)</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>entry.target.classList.add('visible');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Optional: remove 'is-visible' if you want elements to fade out on scroll up</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// entry.target.classList.remove('is-visible');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}, observerOptions);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>animatedElements.forEach(el =&gt; { elementObserver.observe(el); });</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Scroll progress bar</p>
-<p class="p1"><span class="Apple-converted-space">        </span>window.onscroll = function() {updateProgressBar()};</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function updateProgressBar() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>var winScroll = document.body.scrollTop || document.documentElement.scrollTop;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>var scrolled = (winScroll / height) * 100;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const progressBar = document.getElementById("progressBar");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (progressBar) {</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>progressBar.style.width = scrolled + "%";</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Smooth scroll &amp; Active Nav Link (inspired by your example)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const navLinks = document.querySelectorAll('.main-nav .nav-link');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const mainNav = document.querySelector('.main-nav');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>let navHeight = mainNav ? mainNav.offsetHeight : 60; // Default nav height</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>navLinks.forEach(anchor =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>anchor.addEventListener('click', function (e) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>e.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>navHeight = mainNav ? mainNav.offsetHeight : 60;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const targetId = this.getAttribute('href');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const targetElement = document.querySelector(targetId);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (targetElement) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>let targetPosition = targetElement.offsetTop - navHeight + 1;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (targetId === '#hero') targetPosition = 0;<span class="Apple-converted-space"> </span></p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>window.scrollTo({</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>top: targetPosition,</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>behavior: "smooth"</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const contentSectionsForNav = document.querySelectorAll('.hero-section, .content-section'); // Include hero for nav</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function updateActiveNavLink() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>navHeight = mainNav ? mainNav.offsetHeight : 60;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let currentSectionId = '';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let heroSection = document.getElementById('hero');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let firstContentSection = document.querySelector('.content-section'); // First actual content section</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Special handling for hero section</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (heroSection &amp;&amp; window.scrollY &lt; (heroSection.offsetTop + heroSection.offsetHeight - navHeight - 100)) {</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>currentSectionId = '#hero'; // Default to hero if above first content section</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>contentSectionsForNav.forEach(section =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const sectionTop = section.offsetTop - navHeight - 100; // Adjusted offset for earlier activation</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (window.scrollY &gt;= sectionTop) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>currentSectionId = '#' + section.id;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>navLinks.forEach(link =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>link.classList.remove('active');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>// For hero, the first nav link is usually 'Challenge' or similar, adjust if needed</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (currentSectionId === '#hero' &amp;&amp; link.getAttribute('href') === '#challenge') {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                     </span>link.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else if (link.getAttribute('href') === currentSectionId) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">             </span>// If still no active link and at very top, activate first link (which might be #challenge)</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (!document.querySelector('.nav-link.active') &amp;&amp; navLinks.length &gt; 0) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (window.scrollY &lt; (firstContentSection ? firstContentSection.offsetTop - navHeight -100 : window.innerHeight)) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>navLinks[0].classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>window.addEventListener('scroll', updateActiveNavLink);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>window.addEventListener('resize', () =&gt; {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>navHeight = mainNav ? mainNav.offsetHeight : 60;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>updateActiveNavLink();<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>updateActiveNavLink(); // Initial call</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Particle Canvas Background (inspired by your example, simplified for this context)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const canvas = document.getElementById('mainCanvas');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const ctx = canvas.getContext('2d');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>let particlesArray = [];</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const numberOfParticles = Math.min(80, Math.floor(window.innerWidth / 30)); // Fewer particles</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function setCanvasSize() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>canvas.width = window.innerWidth;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>canvas.height = window.innerHeight;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setCanvasSize();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>class Particle {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>constructor() {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.x = Math.random() * canvas.width;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.y = Math.random() * canvas.height;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.size = Math.random() * 1.5 + 0.5; // Smaller particles</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.speedX = (Math.random() * 0.4 - 0.2);<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.speedY = (Math.random() * 0.4 - 0.2);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.color = `rgba(0, 207, 232, ${Math.random() * 0.2 + 0.05})`; // More subtle</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>update() {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.x += this.speedX;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.y += this.speedY;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (this.size &gt; 0.05) this.size -= 0.002;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (this.size &lt;= 0.05) { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + 0.5; /* Reset */ }</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (this.x &gt; canvas.width + this.size || this.x &lt; -this.size || this.y &gt; canvas.height + this.size || this.y &lt; -this.size) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; // Reposition if out of bounds</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>draw() {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillStyle = this.color;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>ctx.beginPath();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>ctx.fill();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function initParticles() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>particlesArray = [];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; numberOfParticles; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>particlesArray.push(new Particle());</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>initParticles();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function connectParticles() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let opacityValue;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const maxConnectDistance = Math.min(100, window.innerWidth / 10);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>for (let a = 0; a &lt; particlesArray.length; a++) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>for (let b = a + 1; b &lt; particlesArray.length; b++) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>let distance = Math.hypot(particlesArray[a].x - particlesArray[b].x, particlesArray[a].y - particlesArray[b].y);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (distance &lt; maxConnectDistance) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>opacityValue = 1 - (distance / maxConnectDistance);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ctx.strokeStyle = `rgba(160, 32, 240, ${opacityValue * 0.15})`; // Subtle purple lines</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ctx.lineWidth = 0.2;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ctx.beginPath();</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ctx.moveTo(particlesArray[a].x, particlesArray[a].y);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ctx.lineTo(particlesArray[b].x, particlesArray[b].y);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ctx.stroke();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function animateCanvas() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>ctx.clearRect(0, 0, canvas.width, canvas.height);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; particlesArray.length; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>particlesArray[i].update();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>particlesArray[i].draw();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>connectParticles();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>requestAnimationFrame(animateCanvas);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>animateCanvas();</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>window.addEventListener('resize', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>setCanvasSize();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>initParticles();<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+    <canvas id="mainCanvas"></canvas>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="nav-links-container">
+            <a href="#challenge" class="nav-link">Challenge</a>
+            <a href="#approach" class="nav-link">Methodology</a>
+            <a href="#models" class="nav-link">Models</a>
+            <a href="#results" class="nav-link">Results</a>
+            <a href="#conclusion" class="nav-link">Conclusion</a>
+        </div>
+    </nav>
+
+    <header class="hero-section" id="hero">
+        <h1 class="hero-project-title">Dynamic Covariance Forecasting</h1>
+        <p class="hero-subtitle-text">Enhancing Portfolio Risk Management via Advanced Statistical Modeling on NIFTY 50 Equities</p>
+        <p class="hero-tagline-text">Historical // EWMA // GARCH-RollCorr</p>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <section id="challenge" class="content-section">
+            <div class="section-title-wrapper"><h2 class="section-title">The Problem: Static Risk in Dynamic Markets</h2></div>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="prose prose-lg text-gray-300 max-w-none">
+                    <p>Effective portfolio management hinges on a precise understanding of asset interdependencies, quantified by the <strong>covariance matrix</strong>. Traditional finance often simplifies this by assuming static covariances.</p>
+                    <p>However, financial markets are inherently dynamic:</p>
+                    <ul>
+                        <li>Inter-asset correlations morph, often amplifying during systemic shocks.</li>
+                        <li>Volatility ebbs and flows, clustering in response to information cascades.</li>
+                    </ul>
+                    <p>Neglecting these dynamics leads to flawed risk assessments and suboptimal investment strategies. This project confronts this by exploring models that adapt to changing market conditions.</p>
+                </div>
+                <div>
+                    <img src="images/adj_close_prices_plot.png" alt="NIFTY 50 Stock Price Trends" class="img-custom-shadow mx-auto">
+                    <p class="text-center text-xs text-text-dark mt-3">Price trends of selected NIFTY 50 stocks (Jan 2010 - May 2025).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="approach" class="content-section bg-bg-dark-secondary rounded-lg py-12 my-12">
+            <div class="section-title-wrapper"><h2 class="section-title">Our Methodology: A Comparative Framework</h2></div>
+            <div class="prose prose-lg text-text-medium max-w-4xl mx-auto text-center">
+                <p>We engineered a systematic pipeline to dissect the efficacy of three distinct covariance forecasting paradigms. The <strong>Global Minimum Variance (GMV)</strong> portfolio strategy served as our crucible, testing how each model's forecasts translate into risk-minimization performance within the Indian equity landscape (12 selected NIFTY 50 stocks, Jan 2010 - May 2025).</p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="data-card is-visible"> <h3 class="!text-accent-highlight">1. Data Foundation</h3>
+                    <p class="text-sm">Daily log returns, preprocessed for stationarity (ADF tests confirmed).</p>
+                </div>
+                <div class="data-card is-visible">
+                    <h3 class="!text-accent-highlight">2. Covariance Engines</h3>
+                    <p class="text-sm">Historical Rolling, EWMA (decay factor lambda = 0.94), GARCH(1,1)-RollCorr (Student's t-dist, 60-day correlation window).</p>
+                </div>
+                <div class="data-card is-visible">
+                    <h3 class="!text-accent-highlight">3. Backtesting Rig</h3>
+                    <p class="text-sm">GMV portfolios, monthly rebalancing. Metrics: Returns, Vol, Sharpe, Sortino, Calmar, Drawdown, Turnover.</p>
+                </div>
+            </div>
+             <div class="mt-16 text-center fade-in-section is-visible" style="transition-delay: 0.5s;">
+                <img src="images/log_returns_timeseries.png" alt="Log Returns Volatility Clustering" class="img-custom-shadow mx-auto">
+                <p class="text-sm text-text-dark mt-4">Data Insight: Volatility clustering observed in daily log returns.</p>
+            </div>
+        </section>
+
+        <section id="models" class="content-section">
+            <div class="section-title-wrapper"><h2 class="section-title">Models Deconstructed</h2></div>
+            <div class="mb-10 flex flex-wrap justify-center gap-3">
+                <button class="tab-button active" onclick="openTab(event, 'historical_model_tab')">Historical</button>
+                <button class="tab-button" onclick="openTab(event, 'ewma_model_tab')">EWMA</button>
+                <button class="tab-button" onclick="openTab(event, 'garch_model_tab')">GARCH-RollCorr</button>
+            </div>
+
+            <div id="historical_model_tab" class="tab-content active data-card">
+                <h3>Historical Rolling Covariance</h3>
+                <p>Calculates sample covariance using a 60-day rolling window. Simple, but slow to adapt and gives equal weight to all past data in the window.</p>
+            </div>
+            <div id="ewma_model_tab" class="tab-content data-card">
+                <h3>EWMA (Exponentially Weighted Moving Average)</h3>
+                <p>Assigns exponentially decaying weights (using a decay factor lambda, $\lambda = 0.94$), prioritizing recent data. More responsive than simple rolling.</p>
+            </div>
+            <div id="garch_model_tab" class="tab-content data-card">
+                <h3>GARCH-RollCorr Hybrid</h3>
+                <p>A two-stage model: 1) Univariate GARCH(1,1) for individual asset volatilities. 2) Rolling 60-day correlation on GARCH standardized residuals. Combines $D_t R_t D_t$ (where $D_t$ is the diagonal matrix of GARCH conditional volatilities and $R_t$ is the dynamic correlation matrix) for the final covariance. Captures volatility clustering and dynamic correlations.</p>
+            </div>
+        </section>
+
+        <section id="results" class="content-section">
+            <div class="section-title-wrapper"><h2 class="section-title">Empirical Performance & Insights</h2></div>
+            
+            <div class="data-card mb-10">
+                <h3>GMV Portfolio: Comparative Metrics</h3>
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th>Strategy</th><th>Cum. Return</th><th>Ann. Return</th><th>Ann. Volatility</th>
+                                <th>Sharpe Ratio</th><th>Max Drawdown</th><th>Sortino Ratio</th><th>Calmar Ratio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-text-light">Historical</td><td>17.5370</td><td>0.2304</td><td>0.1560</td>
+                                <td class="text-accent-green font-semibold">1.4764</td><td class="text-accent-red">-0.2792</td><td>2.0896</td><td>0.8253</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-text-light">EWMA</td><td>13.4565</td><td>0.2130</td><td>0.1711</td>
+                                <td>1.2453</td><td class="text-accent-red">-0.3583</td><td>1.7012</td><td>0.5945</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-text-light">GARCH-RollCorr</td><td>14.2588</td><td>0.2144</td><td class="text-accent-green font-semibold">0.1553</td>
+                                <td>1.3805</td><td class="text-accent-green font-semibold">-0.2365</td><td>1.9195</td><td class="text-accent-green font-semibold">0.9063</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-text-dark mt-3 text-center">Risk-free rate assumed at 0%. Green indicates best for desirable metrics.</p>
+            </div>
+
+            <div class="data-card mb-10">
+                <h3>Wealth Trajectories</h3>
+                <img src="images/gmv_cumulative_returns_comparison.png" alt="Cumulative Returns Plot of GMV Strategies" class="img-custom-shadow mx-auto">
+                <p class="mt-4 text-text-medium">The GARCH-RollCorr strategy, despite not having the highest terminal wealth, exhibited superior risk control, evidenced by the smallest maximum drawdown and highest Calmar ratio. Historical model led in final returns but with greater volatility.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="data-card">
+                    <h3>Portfolio Turnover</h3>
+                     <table class="min-w-full">
+                         <thead><tr><th>Strategy</th><th>Average Turnover</th></tr></thead>
+                        <tbody>
+                            <tr><td class="font-medium text-text-light">Historical</td><td class="metric-value text-sm">0.3998</td></tr>
+                            <tr><td class="font-medium text-text-light">EWMA</td><td class="metric-value text-sm">0.6323</td></tr>
+                            <tr><td class="font-medium text-text-light">GARCH-RollCorr</td><td class="metric-value text-sm">0.4615</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="mt-3 text-text-medium">EWMA showed the highest turnover, implying higher potential transaction costs. Historical was the most stable.</p>
+                </div>
+                <div class="data-card">
+                    <h3>Weight Allocation Dynamics</h3>
+                    <img src="images/GARCH_RollCorr_weights_allocation.png" alt="Example Weight Allocation for GARCH-RollCorr Strategy" class="img-custom-shadow mx-auto mb-3">
+                    <p class="mt-3 text-text-medium">The GARCH-RollCorr model (example shown) often adapted weights more dynamically, reflecting its responsiveness to changing risk estimates. Short positions were utilized by all unconstrained GMV strategies. (Note: Other weight allocation plots for Historical and EWMA strategies can be found in the 'images' folder: Historical_weights_allocation.png, EWMA_weights_allocation.png).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="content-section">
+            <div class="section-title-wrapper"><h2 class="section-title">Conclusion & Future Horizons</h2></div>
+            <div class="data-card prose prose-lg text-text-medium max-w-3xl mx-auto prose-strong:text-primary-color prose-headings:text-accent-highlight prose-ul:marker:text-primary-color">
+                <h4>Key Takeaways</h4>
+                <p>Model selection in dynamic covariance forecasting critically influences portfolio risk-return outcomes. The GARCH-RollCorr model emerged as a strong contender for risk-averse strategies due to its superior drawdown control and volatility management. The simpler Historical model, while achieving high returns, did so with greater risk and lower turnover.</p>
+                <h4>Limitations</h4>
+                <p>This study used unconstrained GMV portfolios and did not factor in explicit transaction costs. The GARCH-RollCorr model is a practical simplification of more complex multivariate GARCH systems.</p>
+                <h4>Future Research</h4>
+                <ul>
+                    <li>Incorporate transaction costs and liquidity constraints.</li>
+                    <li>Implement and compare full DCC-GARCH, BEKK, or other advanced models.</li>
+                    <li>Explore machine learning for direct covariance forecasting or regime identification.</li>
+                    <li>Test on different asset classes and portfolio strategies (e.g., Risk Parity).</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="currentYear"></span> [Your Name] - Quantitative Finance Project</p>
+        <p>System Status: <span>ONLINE</span> // Data Stream: <span>STABLE</span> // Analysis Engine: <span>OPTIMIZED</span></p>
+    </footer>
+
+    <script>
+        // Tab functionality
+        function openTab(event, tabName) {
+            let i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].classList.remove("active");
+            }
+            const targetTab = document.getElementById(tabName);
+            if (targetTab) { 
+                targetTab.classList.add("active");
+            }
+            if (event && event.currentTarget) { 
+                 event.currentTarget.classList.add("active");
+            }
+        }
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const defaultActiveTabButton = document.querySelector('.tab-button.active');
+            if (defaultActiveTabButton) {
+                const onclickAttr = defaultActiveTabButton.getAttribute('onclick');
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/'([^']+)'/);
+                    if (match && match[1]) {
+                        const tabId = match[1];
+                        const targetTab = document.getElementById(tabId);
+                        if (targetTab) {
+                            targetTab.classList.add('active');
+                        }
+                    }
+                }
+            }
+            const currentYearEl = document.getElementById('currentYear');
+            if (currentYearEl) {
+                currentYearEl.textContent = new Date().getFullYear();
+            }
+        });
+
+        // Intersection Observer for scroll animations (inspired by your example)
+        const animatedElements = document.querySelectorAll('.content-section, .hero-section, .data-card, .section-title');
+        const observerOptions = { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 };
+        
+        const elementObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible'); 
+                     if (entry.target.classList.contains('fade-in-section')) { 
+                         entry.target.classList.add('visible');
+                    }
+                }
+            });
+        }, observerOptions);
+        animatedElements.forEach(el => { elementObserver.observe(el); });
+        
+        document.querySelectorAll('.section-title').forEach(el => elementObserver.observe(el));
+
+
+        // Scroll progress bar
+        window.onscroll = function() {updateProgressBar()};
+        function updateProgressBar() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById("progressBar");
+            if (progressBar) {
+                 progressBar.style.width = scrolled + "%";
+            }
+        }
+
+        // Smooth scroll & Active Nav Link (inspired by your example)
+        const navLinks = document.querySelectorAll('.main-nav .nav-link');
+        const mainNav = document.querySelector('.main-nav');
+        let navHeight = mainNav ? mainNav.offsetHeight : 60; 
+
+        navLinks.forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                navHeight = mainNav ? mainNav.offsetHeight : 60;
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    let targetPosition = targetElement.offsetTop - navHeight + 1; 
+                    if (targetId === '#hero') targetPosition = 0; 
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+        
+        const contentSectionsForNav = document.querySelectorAll('.hero-section, .content-section'); 
+        function updateActiveNavLink() {
+            navHeight = mainNav ? mainNav.offsetHeight : 60;
+            let currentSectionId = '';
+            let heroSection = document.getElementById('hero');
+            let firstContentSection = document.querySelector('.content-section'); 
+
+            if (heroSection && window.scrollY < (heroSection.offsetTop + heroSection.offsetHeight - navHeight - 100)) {
+                 currentSectionId = '#hero'; 
+            } else {
+                contentSectionsForNav.forEach(section => {
+                    const sectionTop = section.offsetTop - navHeight - 100; 
+                    if (window.scrollY >= sectionTop) {
+                        currentSectionId = '#' + section.id;
+                    }
+                });
+            }
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (currentSectionId === '#hero' && link.getAttribute('href') === '#challenge') { 
+                     link.classList.add('active');
+                } else if (link.getAttribute('href') === currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+            if (!document.querySelector('.nav-link.active') && navLinks.length > 0) {
+                if (window.scrollY < (firstContentSection ? firstContentSection.offsetTop - navHeight -100 : window.innerHeight)) {
+                    navLinks[0].classList.add('active');
+                }
+            }
+        }
+        window.addEventListener('scroll', updateActiveNavLink);
+        window.addEventListener('resize', () => { 
+            navHeight = mainNav ? mainNav.offsetHeight : 60; 
+            updateActiveNavLink(); 
+        });
+        updateActiveNavLink(); 
+
+        // Particle Canvas Background (inspired by your example)
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        let deviceIsComputer = window.innerWidth > 768; // Simple check
+        let numberOfParticles = deviceIsComputer ? Math.min(100, Math.floor(window.innerWidth / 28)) : Math.min(40, Math.floor(window.innerWidth / 28));
+
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            deviceIsComputer = window.innerWidth > 768;
+            numberOfParticles = deviceIsComputer ? Math.min(100, Math.floor(window.innerWidth / 28)) : Math.min(40, Math.floor(window.innerWidth / 28));
+        }
+        setCanvasSize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * (deviceIsComputer ? 1.8 : 1.2) + 0.4;
+                this.speedX = (Math.random() * 0.5 - 0.25); 
+                this.speedY = (Math.random() * 0.5 - 0.25);
+                this.color = `rgba(0, 207, 232, ${Math.random() * 0.25 + 0.08})`; 
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.05) this.size -= 0.003;
+                if (this.size <= 0.05) { 
+                    this.x = Math.random() * canvas.width; 
+                    this.y = Math.random() * canvas.height; 
+                    this.size = Math.random() * (deviceIsComputer ? 1.8 : 1.2) + 0.4;
+                    this.speedX = (Math.random() * 0.5 - 0.25); 
+                    this.speedY = (Math.random() * 0.5 - 0.25);
+                }
+                // Boundary checks
+                if (this.x < -this.size) this.x = canvas.width + this.size;
+                if (this.x > canvas.width + this.size) this.x = -this.size;
+                if (this.y < -this.size) this.y = canvas.height + this.size;
+                if (this.y > canvas.height + this.size) this.y = -this.size;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function connectParticles() {
+            let opacityValue;
+            const maxConnectDistance = deviceIsComputer ? Math.min(110, window.innerWidth / 9) : Math.min(70, window.innerWidth / 7);
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a + 1; b < particlesArray.length; b++) {
+                    let distance = Math.hypot(particlesArray[a].x - particlesArray[b].x, particlesArray[a].y - particlesArray[b].y);
+                    if (distance < maxConnectDistance) {
+                        opacityValue = 1 - (distance / maxConnectDistance);
+                        ctx.strokeStyle = `rgba(160, 32, 240, ${opacityValue * (deviceIsComputer ? 0.18 : 0.12)})`; 
+                        ctx.lineWidth = deviceIsComputer ? 0.25 : 0.15;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            connectParticles();
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+        
+        window.addEventListener('resize', () => {
+            setCanvasSize(); // This will also update deviceIsComputer and numberOfParticles
+            initParticles(); 
+        });
+
+    </script>
 </body>
 </html>
