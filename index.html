@@ -317,12 +317,13 @@
                 <p>We engineered a systematic pipeline to dissect the efficacy of three distinct covariance forecasting paradigms. The <strong>Global Minimum Variance (GMV)</strong> portfolio strategy served as our crucible, testing how each model's forecasts translate into risk-minimization performance within the Indian equity landscape (12 selected NIFTY 50 stocks, Jan 2010 - May 2025).</p>
             </div>
             <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="data-card is-visible"> <h3 class="!text-accent-highlight">1. Data Foundation</h3>
+                <div class="data-card is-visible"> 
+                    <h3 class="!text-accent-highlight">1. Data Foundation</h3>
                     <p class="text-sm">Daily log returns, preprocessed for stationarity (ADF tests confirmed).</p>
                 </div>
                 <div class="data-card is-visible">
                     <h3 class="!text-accent-highlight">2. Covariance Engines</h3>
-                    <p class="text-sm">Historical Rolling, EWMA (decay factor lambda = 0.94), GARCH(1,1)-RollCorr (Student's t-dist, 60-day correlation window).</p>
+                    <p class="text-sm">Historical Rolling, EWMA (decay factor lambda, λ = 0.94), GARCH(1,1)-RollCorr (Student's t-dist, 60-day correlation window).</p>
                 </div>
                 <div class="data-card is-visible">
                     <h3 class="!text-accent-highlight">3. Backtesting Rig</h3>
@@ -349,11 +350,11 @@
             </div>
             <div id="ewma_model_tab" class="tab-content data-card">
                 <h3>EWMA (Exponentially Weighted Moving Average)</h3>
-                <p>Assigns exponentially decaying weights (using a decay factor lambda, $\lambda = 0.94$), prioritizing recent data. More responsive than simple rolling.</p>
+                <p>Assigns exponentially decaying weights (using a decay factor lambda, λ = 0.94), prioritizing recent data. More responsive than simple rolling.</p>
             </div>
             <div id="garch_model_tab" class="tab-content data-card">
                 <h3>GARCH-RollCorr Hybrid</h3>
-                <p>A two-stage model: 1) Univariate GARCH(1,1) for individual asset volatilities. 2) Rolling 60-day correlation on GARCH standardized residuals. Combines $D_t R_t D_t$ (where $D_t$ is the diagonal matrix of GARCH conditional volatilities and $R_t$ is the dynamic correlation matrix) for the final covariance. Captures volatility clustering and dynamic correlations.</p>
+                <p>A two-stage model: 1) Univariate GARCH(1,1) for individual asset volatilities. 2) Rolling 60-day correlation on GARCH standardized residuals. Combines D<sub>t</sub>R<sub>t</sub>D<sub>t</sub> (where D<sub>t</sub> is the diagonal matrix of GARCH conditional volatilities and R<sub>t</sub> is the dynamic correlation matrix) for the final covariance. Captures volatility clustering and dynamic correlations.</p>
             </div>
         </section>
 
@@ -411,7 +412,7 @@
                 <div class="data-card">
                     <h3>Weight Allocation Dynamics</h3>
                     <img src="images/GARCH_RollCorr_weights_allocation.png" alt="Example Weight Allocation for GARCH-RollCorr Strategy" class="img-custom-shadow mx-auto mb-3">
-                    <p class="mt-3 text-text-medium">The GARCH-RollCorr model (example shown) often adapted weights more dynamically, reflecting its responsiveness to changing risk estimates. Short positions were utilized by all unconstrained GMV strategies. (Note: Other weight allocation plots for Historical and EWMA strategies can be found in the 'images' folder: Historical_weights_allocation.png, EWMA_weights_allocation.png).</p>
+                    <p class="mt-3 text-text-medium">The GARCH-RollCorr model (example shown) often adapted weights more dynamically, reflecting its responsiveness to changing risk estimates. Short positions were utilized by all unconstrained GMV strategies. (Note: Other weight allocation plots can be found in the 'images' folder: Historical_weights_allocation.png, EWMA_weights_allocation.png).</p>
                 </div>
             </div>
         </section>
@@ -435,7 +436,7 @@
     </main>
 
     <footer>
-        <p>&copy; <span id="currentYear"></span> [Your Name] - Quantitative Finance Project</p>
+        <p>&copy; <span id="currentYear"></span> Siddhant Bashisth - Quantitative Finance Project</p>
         <p>System Status: <span>ONLINE</span> // Data Stream: <span>STABLE</span> // Analysis Engine: <span>OPTIMIZED</span></p>
     </footer>
 
@@ -488,17 +489,11 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible'); 
-                     if (entry.target.classList.contains('fade-in-section')) { 
-                         entry.target.classList.add('visible');
-                    }
                 }
             });
         }, observerOptions);
         animatedElements.forEach(el => { elementObserver.observe(el); });
         
-        document.querySelectorAll('.section-title').forEach(el => elementObserver.observe(el));
-
-
         // Scroll progress bar
         window.onscroll = function() {updateProgressBar()};
         function updateProgressBar() {
@@ -538,14 +533,14 @@
         function updateActiveNavLink() {
             navHeight = mainNav ? mainNav.offsetHeight : 60;
             let currentSectionId = '';
-            let heroSection = document.getElementById('hero');
+            let heroSection = document.getElementById('hero'); 
             let firstContentSection = document.querySelector('.content-section'); 
 
-            if (heroSection && window.scrollY < (heroSection.offsetTop + heroSection.offsetHeight - navHeight - 100)) {
-                 currentSectionId = '#hero'; 
+            if (heroSection && window.scrollY < (firstContentSection ? firstContentSection.offsetTop - navHeight - 50 : window.innerHeight / 2)) {
+                 currentSectionId = (navLinks.length > 0) ? navLinks[0].getAttribute('href') : ''; 
             } else {
                 contentSectionsForNav.forEach(section => {
-                    const sectionTop = section.offsetTop - navHeight - 100; 
+                    const sectionTop = section.offsetTop - navHeight - 50; 
                     if (window.scrollY >= sectionTop) {
                         currentSectionId = '#' + section.id;
                     }
@@ -554,17 +549,10 @@
             
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (currentSectionId === '#hero' && link.getAttribute('href') === '#challenge') { 
-                     link.classList.add('active');
-                } else if (link.getAttribute('href') === currentSectionId) {
+                if (link.getAttribute('href') === currentSectionId) {
                     link.classList.add('active');
                 }
             });
-            if (!document.querySelector('.nav-link.active') && navLinks.length > 0) {
-                if (window.scrollY < (firstContentSection ? firstContentSection.offsetTop - navHeight -100 : window.innerHeight)) {
-                    navLinks[0].classList.add('active');
-                }
-            }
         }
         window.addEventListener('scroll', updateActiveNavLink);
         window.addEventListener('resize', () => { 
@@ -577,38 +565,37 @@
         const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
         let particlesArray = [];
-        let deviceIsComputer = window.innerWidth > 768; // Simple check
-        let numberOfParticles = deviceIsComputer ? Math.min(100, Math.floor(window.innerWidth / 28)) : Math.min(40, Math.floor(window.innerWidth / 28));
+        let deviceIsComputer = window.innerWidth > 768; 
+        let numberOfParticles = deviceIsComputer ? Math.min(80, Math.floor(window.innerWidth / 30)) : Math.min(30, Math.floor(window.innerWidth / 30));
 
-        function setCanvasSize() {
+        function setCanvasSizeAndParticles() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             deviceIsComputer = window.innerWidth > 768;
-            numberOfParticles = deviceIsComputer ? Math.min(100, Math.floor(window.innerWidth / 28)) : Math.min(40, Math.floor(window.innerWidth / 28));
+            numberOfParticles = deviceIsComputer ? Math.min(80, Math.floor(window.innerWidth / 30)) : Math.min(30, Math.floor(window.innerWidth / 30));
+            initParticles();
         }
-        setCanvasSize();
-
+        
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * (deviceIsComputer ? 1.8 : 1.2) + 0.4;
-                this.speedX = (Math.random() * 0.5 - 0.25); 
-                this.speedY = (Math.random() * 0.5 - 0.25);
-                this.color = `rgba(0, 207, 232, ${Math.random() * 0.25 + 0.08})`; 
+                this.size = Math.random() * (deviceIsComputer ? 1.6 : 1.1) + 0.3;
+                this.speedX = (Math.random() * 0.3 - 0.15); 
+                this.speedY = (Math.random() * 0.3 - 0.15);
+                this.color = `rgba(0, 207, 232, ${Math.random() * 0.2 + 0.05})`; 
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                if (this.size > 0.05) this.size -= 0.003;
+                if (this.size > 0.05) this.size -= 0.002;
                 if (this.size <= 0.05) { 
                     this.x = Math.random() * canvas.width; 
                     this.y = Math.random() * canvas.height; 
-                    this.size = Math.random() * (deviceIsComputer ? 1.8 : 1.2) + 0.4;
-                    this.speedX = (Math.random() * 0.5 - 0.25); 
-                    this.speedY = (Math.random() * 0.5 - 0.25);
+                    this.size = Math.random() * (deviceIsComputer ? 1.6 : 1.1) + 0.3;
+                    this.speedX = (Math.random() * 0.3 - 0.15); 
+                    this.speedY = (Math.random() * 0.3 - 0.15);
                 }
-                // Boundary checks
                 if (this.x < -this.size) this.x = canvas.width + this.size;
                 if (this.x > canvas.width + this.size) this.x = -this.size;
                 if (this.y < -this.size) this.y = canvas.height + this.size;
@@ -628,18 +615,17 @@
                 particlesArray.push(new Particle());
             }
         }
-        initParticles();
-
+        
         function connectParticles() {
             let opacityValue;
-            const maxConnectDistance = deviceIsComputer ? Math.min(110, window.innerWidth / 9) : Math.min(70, window.innerWidth / 7);
+            const maxConnectDistance = deviceIsComputer ? Math.min(100, window.innerWidth / 10) : Math.min(60, window.innerWidth / 8);
             for (let a = 0; a < particlesArray.length; a++) {
                 for (let b = a + 1; b < particlesArray.length; b++) {
                     let distance = Math.hypot(particlesArray[a].x - particlesArray[b].x, particlesArray[a].y - particlesArray[b].y);
                     if (distance < maxConnectDistance) {
                         opacityValue = 1 - (distance / maxConnectDistance);
-                        ctx.strokeStyle = `rgba(160, 32, 240, ${opacityValue * (deviceIsComputer ? 0.18 : 0.12)})`; 
-                        ctx.lineWidth = deviceIsComputer ? 0.25 : 0.15;
+                        ctx.strokeStyle = `rgba(160, 32, 240, ${opacityValue * (deviceIsComputer ? 0.15 : 0.1)})`; 
+                        ctx.lineWidth = deviceIsComputer ? 0.2 : 0.1;
                         ctx.beginPath();
                         ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
                         ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
@@ -658,12 +644,11 @@
             connectParticles();
             requestAnimationFrame(animateCanvas);
         }
+        
+        setCanvasSizeAndParticles(); // Initial setup
         animateCanvas();
         
-        window.addEventListener('resize', () => {
-            setCanvasSize(); // This will also update deviceIsComputer and numberOfParticles
-            initParticles(); 
-        });
+        window.addEventListener('resize', setCanvasSizeAndParticles);
 
     </script>
 </body>
