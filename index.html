@@ -39,99 +39,22 @@
             pointer-events: none;
         }
 
-        .main-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            background-color: rgba(13, 17, 23, 0.88);  
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px); /* Safari support */
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        /* Base styles for .nav-links-container (mobile first - stacked) */
-        .nav-links-container {
-            display: flex;
-            flex-direction: column; /* Stack vertically by default */
-            align-items: center;    /* Center items horizontally */
-            max-width: 700px;
-            margin: 0 auto;
-            gap: 0.5rem; /* Increased gap slightly for vertical stacking */
-        }
-
-        /* Base styles for .nav-link (mobile first - stacked) */
-        .nav-link {
-            font-family: 'Roboto Mono', monospace;
-            color: var(--text-medium);
-            padding: 0.6rem 1rem; /* Adjusted padding for touch targets */
-            border-radius: 6px; /* Slightly larger radius */
-            transition: color 0.3s ease, text-shadow 0.3s ease, background-color 0.3s ease;
-            text-transform: uppercase;
-            font-size: 0.8rem; /* Good readable size for stacked items */
-            letter-spacing: 0.8px;
-            text-align: center;
-            width: 90%; /* Make links take up significant width */
-            max-width: 300px; /* But not excessively wide on slightly larger "small" screens */
-            box-sizing: border-box; /* Ensure padding doesn't break width calculation */
-        }
-        .nav-link:hover, .nav-link.active {
-            color: var(--primary-color);
-            background-color: rgba(0, 207, 232, 0.08);
-            text-shadow: 0 0 5px var(--glow-primary-subtle);
-        }
-
-        /* Small devices (sm: 640px and up) - links go horizontal and can wrap */
-        @media (min-width: 640px) {
-            .nav-links-container {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center; /* Keep them centered when wrapped */
-                gap: 0.25rem; /* Reduce gap for horizontal layout */
-            }
-            .nav-link {
-                width: auto; /* Revert to auto width */
-                font-size: 0.75rem;
-                padding: 0.6rem 0.8rem;
-            }
-        }
-
-        /* Medium devices (md: 768px and up) - links horizontal, no wrap */
-        @media (min-width: 768px) {
-            .nav-links-container {
-                flex-wrap: nowrap;
-                gap: 0.5rem; /* Original gap for md */
-            }
-            .nav-link {
-                font-size: 0.8rem; /* Original font size for md */
-                padding: 0.5rem 0.75rem; /* Original padding for md */
-            }
-        }
-
+        /* Navigation styles removed as nav bar is removed */
 
         .hero-section {
-            min-height: 70vh; /* Adjusted for mobile */
+            min-height: 70vh; 
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 5rem 1rem 2rem 1rem; /* Adjusted padding for mobile, considering nav height */
-            margin-top: 3rem; /* Add margin to account for potentially taller nav when stacked */
+            padding: 5rem 1rem 2rem 1rem; /* Default padding, no specific top adjustment for nav */
             position: relative;
         }
-         @media (min-width: 640px) { /* Reset margin-top when nav is no longer stacked */
+         /* Removed responsive margin/padding adjustments for hero related to nav height */
+         @media (min-width: 768px) { 
             .hero-section {
-                margin-top: 0;
-                padding-top: 5rem; /* Default padding top for sm and up */
-            }
-        }
-         @media (min-width: 768px) { /* Default padding top for md and up */
-            .hero-section {
-                padding-top: 7rem;
+                padding-top: 7rem; /* Standard padding for larger screens */
                  min-height: 80vh;
             }
         }
@@ -139,7 +62,7 @@
 
         .hero-project-title { 
             font-family: 'Roboto Mono', monospace; 
-            font-size: 1.8rem; /* Adjusted for mobile */
+            font-size: 1.8rem; 
             font-weight: 700;
             color: var(--text-light);
             margin-bottom: 0.5rem;
@@ -149,17 +72,17 @@
         }
         .hero-subtitle-text { 
             font-family: 'Roboto', sans-serif;
-            font-size: 1rem; /* Adjusted for mobile */
+            font-size: 1rem; 
             color: var(--primary-color);
             margin-bottom: 1.25rem;
             opacity: 0;
             animation: popIn 0.8s ease-out 0.5s forwards;
             text-shadow: 0 0 6px var(--glow-primary-subtle);
-            max-width: 600px; /* Ensure it doesn't get too wide */
+            max-width: 600px; 
         }
         .hero-tagline-text { 
             font-family: 'Roboto Mono', monospace;
-            font-size: 0.8rem; /* Adjusted for mobile */
+            font-size: 0.8rem; 
             color: var(--text-medium);
             margin-bottom: 1.5rem;
             opacity: 0;
@@ -172,16 +95,16 @@
         }
         
         .content-section {
-            padding: 2.5rem 1rem 1rem 1rem; /* Adjusted padding for mobile */
+            padding: 2.5rem 1rem 1rem 1rem; 
             position: relative; 
         }
         .section-title-wrapper {
             text-align: center;
-            margin-bottom: 2rem; /* Adjusted margin */
+            margin-bottom: 2rem; 
         }
         .section-title { 
             font-family: 'Roboto Mono', monospace;
-            font-size: 1.4rem; /* Adjusted for mobile */
+            font-size: 1.4rem; 
             font-weight: 500;
             color: var(--primary-color);
             text-transform: uppercase;
@@ -196,7 +119,7 @@
         .section-title::before { 
             content: '>'; 
             position: absolute;
-            left: -1.2em; /* Adjusted for potentially smaller font */
+            left: -1.2em; 
             color: var(--accent-color);
             opacity: 0;
             transition: opacity 0.5s ease-out 0.3s;
@@ -220,8 +143,8 @@
             backdrop-filter: blur(8px) saturate(140%);
             -webkit-backdrop-filter: blur(8px) saturate(140%);
             border: 1px solid var(--border-color);
-            padding: 1.25rem; /* Adjusted padding for mobile */
-            margin-bottom: 1.5rem; /* Adjusted margin */
+            padding: 1.25rem; 
+            margin-bottom: 1.5rem; 
             border-radius: 8px; 
             opacity: 0;
             transform: perspective(800px) rotateX(-6deg) translateY(20px);
@@ -240,38 +163,37 @@
         }
         .data-card h3 { 
             font-family: 'Roboto Mono', monospace;
-            font-size: 1.1rem; /* Adjusted for mobile */
+            font-size: 1.1rem; 
             font-weight: 500;
             color: var(--primary-color);
             margin-bottom: 0.5rem; 
         }
          .data-card ul { list-style-type: none; padding-left: 0; margin-top: 0.5rem; }
         .data-card ul li {
-            font-size: 0.85rem; /* Adjusted for mobile */
+            font-size: 0.85rem; 
             color: var(--text-medium);
             margin-bottom: 0.3rem;
             padding-left: 1.3em; 
             position: relative;
         }
         .data-card ul li::before { content: '»'; position: absolute; left: 0; color: var(--primary-color); font-weight: bold; }
-        .data-card p, .prose p { font-size: 0.9rem; color: var(--text-medium); margin-bottom: 0.8rem; } /* Adjusted for mobile */
+        .data-card p, .prose p { font-size: 0.9rem; color: var(--text-medium); margin-bottom: 0.8rem; } 
         
-        /* Tailwind Prose Overrides for Mobile if needed */
-        .prose { font-size: 0.9rem; } /* Base prose size for mobile */
+        .prose { font-size: 0.9rem; } 
         .prose h4 { color: var(--accent-color); font-family: 'Roboto Mono', monospace; margin-top: 1.25em; font-size: 1em; }
         .prose strong { color: var(--primary-color); }
         .prose ul > li::before { background-color: var(--primary-color); } 
 
 
-        .tab-button-container { /* Added container for better flex control */
+        .tab-button-container { 
             display: flex;
-            flex-wrap: wrap; /* Allow buttons to wrap */
+            flex-wrap: wrap; 
             justify-content: center;
-            gap: 0.5rem; /* Gap between buttons */
-            margin-bottom: 1.5rem; /* Adjusted margin */
+            gap: 0.5rem; 
+            margin-bottom: 1.5rem; 
         }
         .tab-button { 
-            padding: 0.5rem 1rem; /* Adjusted padding */
+            padding: 0.5rem 1rem; 
             border-radius: 6px;
             background-color: transparent;
             border: 2px solid var(--primary-color);
@@ -281,13 +203,13 @@
             font-family: 'Roboto Mono', monospace;
             transition: all 0.3s ease;
             letter-spacing: 0.5px;
-            font-size: 0.8rem; /* Adjusted for mobile */
-            flex-grow: 1; /* Allow buttons to grow if space allows */
+            font-size: 0.8rem; 
+            flex-grow: 1; 
             text-align: center;
         }
-        @media (min-width: 640px) { /* sm breakpoint */
+        @media (min-width: 640px) { 
             .tab-button {
-                flex-grow: 0; /* Revert grow on larger screens */
+                flex-grow: 0; 
             }
         }
         .tab-button:hover {
@@ -306,8 +228,8 @@
         .tab-content.active { display: block; }
 
         table { border-collapse: separate; border-spacing: 0; width: 100%; }
-        th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.8rem;} /* Adjusted padding & font-size */
-        thead th { background-color: rgba(22, 27, 34, 0.9); color: var(--primary-color); font-family: 'Roboto Mono', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.4px; } /* Adjusted font-size */
+        th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.8rem;} 
+        thead th { background-color: rgba(22, 27, 34, 0.9); color: var(--primary-color); font-family: 'Roboto Mono', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.4px; } 
         tbody tr:nth-child(even) { background-color: rgba(22, 27, 34, 0.3); }
         tbody tr:hover { background-color: rgba(0, 207, 232, 0.04); }
         .metric-value { color: var(--primary-color); font-weight: 500; font-size: 0.85rem; } 
@@ -317,7 +239,7 @@
         .progress-bar-container { width: 100%; background-color: rgba(13,17,23,0.5); height: 3px; position: fixed; top: 0; left: 0; z-index: 1000; }
         .progress-bar { height: 3px; background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); width: 0%; transition: width 0.1s linear; }
         
-        footer { text-align: center; padding: 2rem 1rem 1.25rem 1rem; margin-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-dark); font-size: 0.75rem; } /* Adjusted padding & font-size */
+        footer { text-align: center; padding: 2rem 1rem 1.25rem 1rem; margin-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-dark); font-size: 0.75rem; } 
         footer p span { font-family: 'Roboto Mono', monospace; color: var(--primary-color); }
         
         .img-custom-shadow {
@@ -325,30 +247,26 @@
             border-radius: 6px;
             border: 1px solid var(--border-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            max-width: 100%; /* Ensure images are responsive */
-            height: auto; /* Maintain aspect ratio */
+            max-width: 100%; 
+            height: auto; 
         }
         .img-custom-shadow:hover {
             transform: scale(1.015);
             box-shadow: 0 10px 30px -7px rgba(0,0,0,0.4), 0 0 15px -7px var(--glow-primary-subtle); 
         }
 
-        ::-webkit-scrollbar { width: 8px; height: 8px; } /* Added height for horizontal scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; } 
         ::-webkit-scrollbar-track { background: var(--bg-dark-primary); }
         ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; border: 2px solid var(--bg-dark-primary); }
         ::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }
 
-        /* Tailwind Responsive Overrides - Mobile First Approach */
-        /* Small devices (landscape phones, 576px and up) */
         @media (min-width: 576px) {
             .hero-project-title { font-size: 2rem; }
             .hero-subtitle-text { font-size: 1.1rem; }
             .section-title { font-size: 1.5rem; }
         }
 
-        /* Medium devices (tablets, 768px and up) */
         @media (min-width: 768px) {
-            /* .nav-links-container and .nav-link styles are handled above for this breakpoint */
             .hero-project-title { font-size: 2.5rem; }
             .hero-subtitle-text { font-size: 1.15rem; }
             .hero-tagline-text { font-size: 0.85rem; }
@@ -368,10 +286,8 @@
             .metric-value { font-size: 0.95rem; }
             footer { padding: 2.5rem 1rem 1.5rem 1rem; font-size: 0.8rem; }
         }
-         /* Ensure prose classes from Tailwind are responsive */
         .prose {
-            /* Default (mobile) */
-            font-size: 0.9rem; /* Example base size for mobile */
+            font-size: 0.9rem; 
             line-height: 1.6;
         }
         .prose h1 { font-size: 1.8em; margin-top: 1em; margin-bottom: 0.5em; }
@@ -381,11 +297,10 @@
         .prose ul { margin-bottom: 1em; padding-left: 1.2em; }
         .prose li { margin-bottom: 0.3em; }
 
-        @media (min-width: 768px) { /* md breakpoint */
+        @media (min-width: 768px) { 
             .prose {
-                font-size: 1rem; /* Base size for larger screens */
+                font-size: 1rem; 
             }
-             /* You can add more specific prose adjustments for larger screens if needed */
         }
 
     </style>
@@ -395,16 +310,6 @@
     <div class="progress-bar-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
-
-    <nav class="main-nav">
-        <div class="nav-links-container">
-            <a href="#challenge" class="nav-link">Challenge</a>
-            <a href="#approach" class="nav-link">Methodology</a>
-            <a href="#models" class="nav-link">Models</a>
-            <a href="#results" class="nav-link">Results</a>
-            <a href="#conclusion" class="nav-link">Conclusion</a>
-        </div>
-    </nav>
 
     <header class="hero-section" id="hero">
         <h1 class="hero-project-title">Dynamic Covariance Forecasting</h1>
@@ -582,7 +487,6 @@
             tabcontent = document.getElementsByClassName("tab-content");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].classList.remove("active");
-                // Ensure data-cards within tabs also reset their visibility for animation
                 if (tabcontent[i].classList.contains('data-card')) {
                     tabcontent[i].classList.remove('is-visible');
                 }
@@ -594,12 +498,11 @@
             const targetTab = document.getElementById(tabName);
             if (targetTab) { 
                 targetTab.classList.add("active");
-                // Trigger visibility for animation
                 setTimeout(() => {
                     if (targetTab.classList.contains('data-card')) {
                          targetTab.classList.add('is-visible');
                     }
-                }, 50); // Small delay to ensure class change is registered for animation
+                }, 50); 
             }
             if (event && event.currentTarget) { 
                  event.currentTarget.classList.add("active");
@@ -616,7 +519,6 @@
                         const targetTab = document.getElementById(tabId);
                         if (targetTab) {
                             targetTab.classList.add('active');
-                             // Trigger visibility for animation on load for the default active tab
                             if (targetTab.classList.contains('data-card')) {
                                 targetTab.classList.add('is-visible');
                             }
@@ -628,14 +530,13 @@
             if (currentYearEl) {
                 currentYearEl.textContent = new Date().getFullYear();
             }
-             // Initialize MathJax if available - for rendering LaTeX like D_t R_t D_t
             if (typeof MathJax !== 'undefined') {
                 MathJax.typesetPromise();
             }
         });
 
         // Intersection Observer for scroll animations
-        const animatedElements = document.querySelectorAll('.content-section, .hero-section, .data-card:not(.tab-content), .section-title, .fade-in-section'); // Exclude tab-content data-cards from initial observation
+        const animatedElements = document.querySelectorAll('.content-section, .hero-section, .data-card:not(.tab-content), .section-title, .fade-in-section');
         const observerOptions = { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 };
         
         const elementObserver = new IntersectionObserver((entries, observer) => {
@@ -663,89 +564,13 @@
             }
         }
 
-        // Smooth scroll & Active Nav Link
-        const navLinks = document.querySelectorAll('.main-nav .nav-link');
-        const mainNav = document.querySelector('.main-nav');
-        let navHeight = mainNav ? mainNav.offsetHeight : 60; 
+        // Smooth scroll & Active Nav Link functionality removed as nav links are removed.
+        // const navLinks = document.querySelectorAll('.main-nav .nav-link'); // Removed
+        // const mainNav = document.querySelector('.main-nav'); // Removed
+        // let navHeight = 0; // Set to 0 as nav is removed
 
-        navLinks.forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                navHeight = mainNav ? mainNav.offsetHeight : 60; 
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    let targetPosition = targetElement.offsetTop - navHeight + 1; 
-                    if (targetId === '#hero') { // Special handling for hero scroll
-                        targetPosition = 0; 
-                    } else {
-                         // Add a little extra offset for other sections if nav is tall
-                        if (mainNav.offsetHeight > 100) { // Example: if nav is tall (stacked)
-                            targetPosition -= 20; // Add a bit more space
-                        }
-                    }
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: "smooth"
-                    });
-                }
-            });
-        });
+        // Event listeners for navLinks and updateActiveNavLink removed.
         
-        const contentSectionsForNav = document.querySelectorAll('#hero, .content-section'); 
-        function updateActiveNavLink() {
-            navHeight = mainNav ? mainNav.offsetHeight : 0; // Get current nav height
-            let currentSectionId = '';
-            let heroSection = document.getElementById('hero');
-            let firstContentSection = document.querySelector('.content-section:not(#hero)');
-
-            // Determine the scroll position relative to sections
-            let scrollY = window.scrollY;
-
-            // Check hero section first
-            if (heroSection) {
-                // If the hero section is visible and we are near the top, or before the first "real" content section
-                if (scrollY < (firstContentSection ? firstContentSection.offsetTop - navHeight - 50 : heroSection.offsetHeight / 2)) {
-                     // Try to find a nav link that explicitly targets #hero or make the first link active by default
-                    let heroLink = document.querySelector('.nav-link[href="#hero"]');
-                    if (heroLink) {
-                        currentSectionId = '#hero';
-                    } else if (navLinks.length > 0) {
-                        // If no explicit hero link, and we are in hero area, make the first *actual section* link active
-                        // This assumes nav links correspond to .content-section elements primarily
-                        // For this page, #challenge is the first link.
-                        currentSectionId = '#challenge';
-                    }
-                }
-            }
-            
-            // Iterate over content sections to find the current one
-            // This will override hero if a content section is scrolled into view
-            if (!currentSectionId || scrollY >= (firstContentSection ? firstContentSection.offsetTop - navHeight - 50 : 0)) {
-                 contentSectionsForNav.forEach(section => {
-                    const sectionTop = section.offsetTop - navHeight - 50; // Offset to activate a bit earlier
-                    if (scrollY >= sectionTop) {
-                        currentSectionId = '#' + section.id;
-                    }
-                });
-            }
-
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === currentSectionId) {
-                    link.classList.add('active');
-                }
-            });
-        }
-        window.addEventListener('scroll', updateActiveNavLink);
-        window.addEventListener('resize', () => { 
-            navHeight = mainNav ? mainNav.offsetHeight : 60; 
-            updateActiveNavLink(); 
-            setCanvasSizeAndParticles(); 
-        });
-        updateActiveNavLink(); 
-
         // Particle Canvas Background
         const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
@@ -849,8 +674,8 @@
                 if (animationFrameId) {
                     cancelAnimationFrame(animationFrameId);
                 }
-                setCanvasSizeAndParticles();
-                animateCanvas(); 
+                setCanvasSizeAndParticles(); // This will re-init particles based on new size
+                animateCanvas(); // Restart animation with new sizes
             }, 250); 
         });
 
