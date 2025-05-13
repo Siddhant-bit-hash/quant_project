@@ -52,31 +52,65 @@
             border-bottom: 1px solid var(--border-color);
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
+
+        /* Base styles for .nav-links-container (mobile first - stacked) */
         .nav-links-container {
             display: flex;
-            flex-wrap: wrap; /* Allow links to wrap on smaller screens */
-            justify-content: center; 
-            align-items: center;
-            max-width: 700px; 
+            flex-direction: column; /* Stack vertically by default */
+            align-items: center;    /* Center items horizontally */
+            max-width: 700px;
             margin: 0 auto;
-            gap: 0.25rem; /* Reduced gap for tighter packing if wrapped */
+            gap: 0.5rem; /* Increased gap slightly for vertical stacking */
         }
+
+        /* Base styles for .nav-link (mobile first - stacked) */
         .nav-link {
             font-family: 'Roboto Mono', monospace;
             color: var(--text-medium);
-            padding: 0.6rem 0.8rem; /* Slightly increased padding for touch */
-            border-radius: 5px;
+            padding: 0.6rem 1rem; /* Adjusted padding for touch targets */
+            border-radius: 6px; /* Slightly larger radius */
             transition: color 0.3s ease, text-shadow 0.3s ease, background-color 0.3s ease;
             text-transform: uppercase;
-            font-size: 0.75rem; /* Slightly reduced for mobile, or use sm:text-sm */
+            font-size: 0.8rem; /* Good readable size for stacked items */
             letter-spacing: 0.8px;
-            text-align: center; /* Ensure text is centered if they stack */
+            text-align: center;
+            width: 90%; /* Make links take up significant width */
+            max-width: 300px; /* But not excessively wide on slightly larger "small" screens */
+            box-sizing: border-box; /* Ensure padding doesn't break width calculation */
         }
         .nav-link:hover, .nav-link.active {
             color: var(--primary-color);
             background-color: rgba(0, 207, 232, 0.08);
             text-shadow: 0 0 5px var(--glow-primary-subtle);
         }
+
+        /* Small devices (sm: 640px and up) - links go horizontal and can wrap */
+        @media (min-width: 640px) {
+            .nav-links-container {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center; /* Keep them centered when wrapped */
+                gap: 0.25rem; /* Reduce gap for horizontal layout */
+            }
+            .nav-link {
+                width: auto; /* Revert to auto width */
+                font-size: 0.75rem;
+                padding: 0.6rem 0.8rem;
+            }
+        }
+
+        /* Medium devices (md: 768px and up) - links horizontal, no wrap */
+        @media (min-width: 768px) {
+            .nav-links-container {
+                flex-wrap: nowrap;
+                gap: 0.5rem; /* Original gap for md */
+            }
+            .nav-link {
+                font-size: 0.8rem; /* Original font size for md */
+                padding: 0.5rem 0.75rem; /* Original padding for md */
+            }
+        }
+
 
         .hero-section {
             min-height: 70vh; /* Adjusted for mobile */
@@ -85,9 +119,24 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 5rem 1rem 2rem 1rem; /* Adjusted padding for mobile */
+            padding: 5rem 1rem 2rem 1rem; /* Adjusted padding for mobile, considering nav height */
+            margin-top: 3rem; /* Add margin to account for potentially taller nav when stacked */
             position: relative;
         }
+         @media (min-width: 640px) { /* Reset margin-top when nav is no longer stacked */
+            .hero-section {
+                margin-top: 0;
+                padding-top: 5rem; /* Default padding top for sm and up */
+            }
+        }
+         @media (min-width: 768px) { /* Default padding top for md and up */
+            .hero-section {
+                padding-top: 7rem;
+                 min-height: 80vh;
+            }
+        }
+
+
         .hero-project-title { 
             font-family: 'Roboto Mono', monospace; 
             font-size: 1.8rem; /* Adjusted for mobile */
@@ -223,7 +272,6 @@
         }
         .tab-button { 
             padding: 0.5rem 1rem; /* Adjusted padding */
-            /* margin: 0 0.25rem; Removed margin, using gap on container */
             border-radius: 6px;
             background-color: transparent;
             border: 2px solid var(--primary-color);
@@ -300,9 +348,7 @@
 
         /* Medium devices (tablets, 768px and up) */
         @media (min-width: 768px) {
-            .nav-links-container { flex-wrap: nowrap; gap: 0.5rem; } /* No wrap on larger screens */
-            .nav-link { font-size: 0.8rem; padding: 0.5rem 0.75rem; }
-            .hero-section { padding: 7rem 1.5rem 3rem 1.5rem; min-height: 80vh;}
+            /* .nav-links-container and .nav-link styles are handled above for this breakpoint */
             .hero-project-title { font-size: 2.5rem; }
             .hero-subtitle-text { font-size: 1.15rem; }
             .hero-tagline-text { font-size: 0.85rem; }
@@ -366,9 +412,11 @@
         <p class="hero-tagline-text">Historical // EWMA // GARCH-RollCorr</p>
     </header>
 
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10"> <section id="challenge" class="content-section">
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10"> 
+        <section id="challenge" class="content-section">
             <div class="section-title-wrapper"><h2 class="section-title">The Problem: Static Risk in Dynamic Markets</h2></div>
-            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center"> <div class="prose text-gray-300 max-w-none">
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center"> 
+                <div class="prose text-gray-300 max-w-none">
                     <p>Effective portfolio management hinges on a precise understanding of asset interdependencies, quantified by the <strong>covariance matrix</strong>. Traditional finance often simplifies this by assuming static covariances.</p>
                     <p>However, financial markets are inherently dynamic:</p>
                     <ul>
@@ -387,11 +435,13 @@
             </div>
         </section>
 
-        <section id="approach" class="content-section bg-bg-dark-secondary rounded-lg py-8 md:py-12 my-8 md:my-12"> <div class="section-title-wrapper"><h2 class="section-title">Our Methodology: A Comparative Framework</h2></div>
+        <section id="approach" class="content-section bg-bg-dark-secondary rounded-lg py-8 md:py-12 my-8 md:my-12"> 
+            <div class="section-title-wrapper"><h2 class="section-title">Our Methodology: A Comparative Framework</h2></div>
             <div class="prose text-text-medium max-w-4xl mx-auto text-center">
                 <p>We engineered a systematic pipeline to dissect the efficacy of three distinct covariance forecasting paradigms. The <strong>Global Minimum Variance (GMV)</strong> portfolio strategy served as our crucible, testing how each model's forecasts translate into risk-minimization performance within the Indian equity landscape (12 selected NIFTY 50 stocks, Jan 2010 - May 2025).</p>
             </div>
-            <div class="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center"> <div class="data-card is-visible"> 
+            <div class="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center"> 
+                <div class="data-card is-visible"> 
                     <h3 class="!text-primary-color">1. Data Foundation</h3>
                     <p class="text-sm">Daily log returns, preprocessed for stationarity (ADF tests confirmed).</p>
                 </div>
@@ -405,7 +455,7 @@
                 </div>
             </div>
              <div class="mt-10 md:mt-16 text-center fade-in-section is-visible" style="transition-delay: 0.5s;">
-                 <img src="images/log_returns_timeseries.png" 
+                <img src="images/log_returns_timeseries.png" 
                      alt="Log Returns Volatility Clustering" 
                      class="img-custom-shadow mx-auto w-full h-auto object-cover rounded-md"
                      onerror="this.onerror=null; this.src='https://placehold.co/600x300/161B22/E6EDF3?text=Log+Returns+Chart';">
@@ -431,8 +481,8 @@
             </div>
             <div id="garch_model_tab" class="tab-content data-card">
                 <h3>GARCH-RollCorr Hybrid</h3>
-                <p>A two-stage model: 1) Univariate GARCH(1,1) for individual asset volatilities. 2) Rolling 60-day correlation on GARCH standardized residuals. Combines D<sub>t</sub>R<sub>t</sub>D<sub>t</sub> (where D<sub>t</sub> is the diagonal matrix of GARCH conditional volatilities and R<sub>t</sub> is the dynamic correlation matrix) for the final covariance. Captures volatility clustering and dynamic correlations.</p>
-                 </div>
+                <p>A two-stage model: 1) Univariate GARCH(1,1) for individual asset volatilities. 2) Rolling 60-day correlation on GARCH standardized residuals. Combines $D_t R_t D_t$ (where $D_t$ is the diagonal matrix of GARCH conditional volatilities and $R_t$ is the dynamic correlation matrix) for the final covariance. Captures volatility clustering and dynamic correlations.</p>
+            </div>
         </section>
 
         <section id="results" class="content-section">
@@ -440,7 +490,8 @@
             
             <div class="data-card mb-8 md:mb-10">
                 <h3>GMV Portfolio: Comparative Metrics</h3>
-                <div class="overflow-x-auto mt-4 rounded-md"> <table class="min-w-full">
+                <div class="overflow-x-auto mt-4 rounded-md"> 
+                    <table class="min-w-full">
                         <thead>
                             <tr>
                                 <th>Strategy</th><th>Cum. Return</th><th>Ann. Return</th><th>Ann. Volatility</th>
@@ -468,16 +519,18 @@
 
             <div class="data-card mb-8 md:mb-10">
                 <h3>Wealth Trajectories</h3>
-                 <img src="images/gmv_cumulative_returns_comparison.png" 
+                <img src="images/gmv_cumulative_returns_comparison.png" 
                      alt="Cumulative Returns Plot of GMV Strategies" 
                      class="img-custom-shadow mx-auto w-full h-auto object-cover rounded-md"
                      onerror="this.onerror=null; this.src='https://placehold.co/600x400/161B22/E6EDF3?text=Wealth+Trajectories+Chart';">
                 <p class="mt-4 text-text-medium">The GARCH-RollCorr strategy, despite not having the highest terminal wealth, exhibited superior risk control, evidenced by the smallest maximum drawdown and highest Calmar ratio. Historical model led in final returns but with greater volatility.</p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-6 md:gap-8"> <div class="data-card">
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8"> 
+                <div class="data-card">
                     <h3>Portfolio Turnover</h3>
-                     <div class="overflow-x-auto rounded-md"> <table class="min-w-full">
+                     <div class="overflow-x-auto rounded-md"> 
+                        <table class="min-w-full">
                             <thead><tr><th>Strategy</th><th>Average Turnover</th></tr></thead>
                             <tbody>
                                 <tr><td class="font-medium text-text-light">Historical</td><td class="metric-value text-sm">0.3998</td></tr>
@@ -490,7 +543,7 @@
                 </div>
                 <div class="data-card">
                     <h3>Weight Allocation Dynamics</h3>
-                     <img src="images/GARCH_RollCorr_weights_allocation.png" 
+                    <img src="images/GARCH_RollCorr_weights_allocation.png" 
                          alt="Example Weight Allocation for GARCH-RollCorr Strategy" 
                          class="img-custom-shadow mx-auto mb-3 w-full h-auto object-cover rounded-md"
                          onerror="this.onerror=null; this.src='https://placehold.co/600x400/161B22/E6EDF3?text=Weight+Allocation+Chart';">
@@ -575,6 +628,10 @@
             if (currentYearEl) {
                 currentYearEl.textContent = new Date().getFullYear();
             }
+             // Initialize MathJax if available - for rendering LaTeX like D_t R_t D_t
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise();
+            }
         });
 
         // Intersection Observer for scroll animations
@@ -585,12 +642,10 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible'); 
-                    // No need to unobserve for these types of animations
                 }
             });
         }, observerOptions);
         animatedElements.forEach(el => { 
-            // For elements that are part of tabs, their visibility is handled by openTab
             if (!el.classList.contains('tab-content')) {
                 elementObserver.observe(el); 
             }
@@ -616,13 +671,19 @@
         navLinks.forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                navHeight = mainNav ? mainNav.offsetHeight : 60; // Recalculate navHeight on click
+                navHeight = mainNav ? mainNav.offsetHeight : 60; 
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     let targetPosition = targetElement.offsetTop - navHeight + 1; 
-                    if (targetId === '#hero') targetPosition = 0; 
-
+                    if (targetId === '#hero') { // Special handling for hero scroll
+                        targetPosition = 0; 
+                    } else {
+                         // Add a little extra offset for other sections if nav is tall
+                        if (mainNav.offsetHeight > 100) { // Example: if nav is tall (stacked)
+                            targetPosition -= 20; // Add a bit more space
+                        }
+                    }
                     window.scrollTo({
                         top: targetPosition,
                         behavior: "smooth"
@@ -631,56 +692,45 @@
             });
         });
         
-        const contentSectionsForNav = document.querySelectorAll('#hero, .content-section'); // Include hero for nav highlighting
+        const contentSectionsForNav = document.querySelectorAll('#hero, .content-section'); 
         function updateActiveNavLink() {
-            navHeight = mainNav ? mainNav.offsetHeight : 60; // Recalculate navHeight on scroll/resize
+            navHeight = mainNav ? mainNav.offsetHeight : 0; // Get current nav height
             let currentSectionId = '';
-            
-            // Special handling for the hero section
-            const heroSection = document.getElementById('hero');
-            const firstContentSectionAfterHero = document.querySelector('.content-section:not(#hero)'); // Get the first actual content section
+            let heroSection = document.getElementById('hero');
+            let firstContentSection = document.querySelector('.content-section:not(#hero)');
 
-            if (heroSection && window.scrollY < (firstContentSectionAfterHero ? firstContentSectionAfterHero.offsetTop - navHeight - 100 : window.innerHeight / 2) ) {
-                 // If we are close to the top or in the hero section, make the first nav link active (assuming it links to hero or first section)
-                 // The first nav link might be "Challenge" which is after Hero.
-                 // Let's find the link that corresponds to #hero or the first conceptual section.
-                 // For this page, the first link is "Challenge", but hero is the top.
-                 // We'll default to making the first nav link active if no other section matches.
-                 // Or, if a link explicitly points to #hero, make that active.
-                 // For now, if we are above the first "content-section", we assume it's the hero context.
-                 // The links are Challenge, Methodology etc. There's no explicit "Home" or "Hero" link.
-                 // So, if we are scrolled near the top, "Challenge" (the first link) should be active.
-                 // The logic needs to check if the scroll is before the first actual section linked in nav.
+            // Determine the scroll position relative to sections
+            let scrollY = window.scrollY;
 
-                let foundActive = false;
-                contentSectionsForNav.forEach(section => {
-                    const sectionTop = section.offsetTop - navHeight - 100; // Adjusted offset for earlier activation
-                    const sectionBottom = sectionTop + section.offsetHeight;
-                    if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
-                        currentSectionId = '#' + section.id;
-                        foundActive = true;
-                    }
-                });
-                // If still near top and no section matched (e.g. hero is very tall), make first link active
-                if (!foundActive && window.scrollY < (firstContentSectionAfterHero ? firstContentSectionAfterHero.offsetTop - navHeight - 100 : window.innerHeight / 2)) {
-                    if (navLinks.length > 0 && navLinks[0].getAttribute('href') === '#challenge') { // Assuming first link is #challenge
-                         // If hero is very tall, and we are still in hero section but before #challenge,
-                         // we might want to keep #challenge active or no link active.
-                         // Let's make #challenge active if we are in the hero visual space.
-                         currentSectionId = '#challenge'; // Default to first link if in hero area
+            // Check hero section first
+            if (heroSection) {
+                // If the hero section is visible and we are near the top, or before the first "real" content section
+                if (scrollY < (firstContentSection ? firstContentSection.offsetTop - navHeight - 50 : heroSection.offsetHeight / 2)) {
+                     // Try to find a nav link that explicitly targets #hero or make the first link active by default
+                    let heroLink = document.querySelector('.nav-link[href="#hero"]');
+                    if (heroLink) {
+                        currentSectionId = '#hero';
+                    } else if (navLinks.length > 0) {
+                        // If no explicit hero link, and we are in hero area, make the first *actual section* link active
+                        // This assumes nav links correspond to .content-section elements primarily
+                        // For this page, #challenge is the first link.
+                        currentSectionId = '#challenge';
                     }
                 }
-
-
-            } else {
-                contentSectionsForNav.forEach(section => {
-                    const sectionTop = section.offsetTop - navHeight - 50; // Standard offset
-                    if (window.scrollY >= sectionTop) {
+            }
+            
+            // Iterate over content sections to find the current one
+            // This will override hero if a content section is scrolled into view
+            if (!currentSectionId || scrollY >= (firstContentSection ? firstContentSection.offsetTop - navHeight - 50 : 0)) {
+                 contentSectionsForNav.forEach(section => {
+                    const sectionTop = section.offsetTop - navHeight - 50; // Offset to activate a bit earlier
+                    if (scrollY >= sectionTop) {
                         currentSectionId = '#' + section.id;
                     }
                 });
             }
-            
+
+
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === currentSectionId) {
@@ -692,9 +742,9 @@
         window.addEventListener('resize', () => { 
             navHeight = mainNav ? mainNav.offsetHeight : 60; 
             updateActiveNavLink(); 
-            setCanvasSizeAndParticles(); // Also update canvas on resize
+            setCanvasSizeAndParticles(); 
         });
-        updateActiveNavLink(); // Initial call
+        updateActiveNavLink(); 
 
         // Particle Canvas Background
         const canvas = document.getElementById('mainCanvas');
@@ -707,11 +757,10 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             deviceIsComputer = window.innerWidth > 768;
-            // Further reduce particles on very small screens for performance
             if (window.innerWidth < 480) {
                 numberOfParticles = Math.min(15, Math.floor(window.innerWidth / 30));
             } else {
-                numberOfParticles = deviceIsComputer ? Math.min(60, Math.floor(window.innerWidth / 35)) : Math.min(25, Math.floor(window.innerWidth / 30)); // Adjusted particle counts
+                numberOfParticles = deviceIsComputer ? Math.min(60, Math.floor(window.innerWidth / 35)) : Math.min(25, Math.floor(window.innerWidth / 30)); 
             }
             initParticles();
         }
@@ -720,15 +769,15 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * (deviceIsComputer ? 1.5 : 1.0) + 0.2; // Adjusted sizes
-                this.speedX = (Math.random() * 0.25 - 0.125); // Slightly slower speeds
+                this.size = Math.random() * (deviceIsComputer ? 1.5 : 1.0) + 0.2; 
+                this.speedX = (Math.random() * 0.25 - 0.125); 
                 this.speedY = (Math.random() * 0.25 - 0.125);
-                this.color = `rgba(0, 207, 232, ${Math.random() * 0.15 + 0.03})`; // More subtle alpha
+                this.color = `rgba(0, 207, 232, ${Math.random() * 0.15 + 0.03})`; 
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                if (this.size > 0.03) this.size -= 0.0015; // Slower shrink
+                if (this.size > 0.03) this.size -= 0.0015; 
                 if (this.size <= 0.03) { 
                     this.x = Math.random() * canvas.width; 
                     this.y = Math.random() * canvas.height; 
@@ -736,7 +785,6 @@
                     this.speedX = (Math.random() * 0.25 - 0.125); 
                     this.speedY = (Math.random() * 0.25 - 0.125);
                 }
-                // Boundary checks (wrap around)
                 if (this.x < -this.size) this.x = canvas.width + this.size;
                 else if (this.x > canvas.width + this.size) this.x = -this.size;
                 if (this.y < -this.size) this.y = canvas.height + this.size;
@@ -759,14 +807,14 @@
         
         function connectParticles() {
             let opacityValue;
-            const maxConnectDistance = deviceIsComputer ? Math.min(90, window.innerWidth / 12) : Math.min(50, window.innerWidth / 10); // Adjusted distances
+            const maxConnectDistance = deviceIsComputer ? Math.min(90, window.innerWidth / 12) : Math.min(50, window.innerWidth / 10); 
             for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a + 1; b < particlesArray.length; b++) { // Start b from a + 1 to avoid re-calculating and self-connection
+                for (let b = a + 1; b < particlesArray.length; b++) { 
                     let distance = Math.hypot(particlesArray[a].x - particlesArray[b].x, particlesArray[a].y - particlesArray[b].y);
                     if (distance < maxConnectDistance) {
                         opacityValue = 1 - (distance / maxConnectDistance);
-                        ctx.strokeStyle = `rgba(160, 32, 240, ${opacityValue * (deviceIsComputer ? 0.12 : 0.08)})`; // More subtle lines
-                        ctx.lineWidth = deviceIsComputer ? 0.15 : 0.08; // Thinner lines
+                        ctx.strokeStyle = `rgba(160, 32, 240, ${opacityValue * (deviceIsComputer ? 0.12 : 0.08)})`; 
+                        ctx.lineWidth = deviceIsComputer ? 0.15 : 0.08; 
                         ctx.beginPath();
                         ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
                         ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
@@ -787,22 +835,13 @@
             animationFrameId = requestAnimationFrame(animateCanvas);
         }
         
-        // Initial setup
-        // Ensure canvas setup and animation start after DOM is ready
-        // and potentially after a small delay if performance is an issue on load.
-        // The DOMContentLoaded listener above handles some initial setup.
-        // Particle canvas can be initialized here or within DOMContentLoaded.
-        
-        // Call on load and resize
         setCanvasSizeAndParticles(); 
         
-        // Stop previous animation frame before starting a new one if resizing
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);
         }
         animateCanvas();
         
-        // Ensure resize listener for canvas is robust
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
@@ -811,10 +850,12 @@
                     cancelAnimationFrame(animationFrameId);
                 }
                 setCanvasSizeAndParticles();
-                animateCanvas(); // Restart animation with new sizes
-            }, 250); // Debounce resize event
+                animateCanvas(); 
+            }, 250); 
         });
 
     </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
 </html>
