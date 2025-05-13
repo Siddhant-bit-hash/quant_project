@@ -45,29 +45,32 @@
             left: 0;
             width: 100%;
             z-index: 1000;
-            background-color: rgba(13, 17, 23, 0.88); 
+            background-color: rgba(13, 17, 23, 0.88);  
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
             padding: 0.75rem 1rem;
             border-bottom: 1px solid var(--border-color);
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         .nav-links-container {
             display: flex;
+            flex-wrap: wrap; /* Allow links to wrap on smaller screens */
             justify-content: center; 
             align-items: center;
             max-width: 700px; 
             margin: 0 auto;
-            gap: 0.5rem; 
+            gap: 0.25rem; /* Reduced gap for tighter packing if wrapped */
         }
         .nav-link {
             font-family: 'Roboto Mono', monospace;
             color: var(--text-medium);
-            padding: 0.5rem 0.75rem; 
+            padding: 0.6rem 0.8rem; /* Slightly increased padding for touch */
             border-radius: 5px;
             transition: color 0.3s ease, text-shadow 0.3s ease, background-color 0.3s ease;
             text-transform: uppercase;
-            font-size: 0.8rem; 
+            font-size: 0.75rem; /* Slightly reduced for mobile, or use sm:text-sm */
             letter-spacing: 0.8px;
+            text-align: center; /* Ensure text is centered if they stack */
         }
         .nav-link:hover, .nav-link.active {
             color: var(--primary-color);
@@ -76,18 +79,18 @@
         }
 
         .hero-section {
-            min-height: 80vh; 
+            min-height: 70vh; /* Adjusted for mobile */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 7rem 1.5rem 3rem 1.5rem; 
+            padding: 5rem 1rem 2rem 1rem; /* Adjusted padding for mobile */
             position: relative;
         }
         .hero-project-title { 
             font-family: 'Roboto Mono', monospace; 
-            font-size: 2.5rem; 
+            font-size: 1.8rem; /* Adjusted for mobile */
             font-weight: 700;
             color: var(--text-light);
             margin-bottom: 0.5rem;
@@ -97,19 +100,19 @@
         }
         .hero-subtitle-text { 
             font-family: 'Roboto', sans-serif;
-            font-size: 1.15rem; 
+            font-size: 1rem; /* Adjusted for mobile */
             color: var(--primary-color);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             opacity: 0;
             animation: popIn 0.8s ease-out 0.5s forwards;
             text-shadow: 0 0 6px var(--glow-primary-subtle);
-            max-width: 700px;
+            max-width: 600px; /* Ensure it doesn't get too wide */
         }
         .hero-tagline-text { 
             font-family: 'Roboto Mono', monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem; /* Adjusted for mobile */
             color: var(--text-medium);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             opacity: 0;
             animation: popIn 0.8s ease-out 0.8s forwards;
         }
@@ -120,16 +123,16 @@
         }
         
         .content-section {
-            padding: 3.5rem 1rem 1.5rem 1rem; 
+            padding: 2.5rem 1rem 1rem 1rem; /* Adjusted padding for mobile */
             position: relative; 
         }
         .section-title-wrapper {
             text-align: center;
-            margin-bottom: 2.5rem; 
+            margin-bottom: 2rem; /* Adjusted margin */
         }
         .section-title { 
             font-family: 'Roboto Mono', monospace;
-            font-size: 1.7rem; 
+            font-size: 1.4rem; /* Adjusted for mobile */
             font-weight: 500;
             color: var(--primary-color);
             text-transform: uppercase;
@@ -144,7 +147,7 @@
         .section-title::before { 
             content: '>'; 
             position: absolute;
-            left: -1.5em; 
+            left: -1.2em; /* Adjusted for potentially smaller font */
             color: var(--accent-color);
             opacity: 0;
             transition: opacity 0.5s ease-out 0.3s;
@@ -168,8 +171,8 @@
             backdrop-filter: blur(8px) saturate(140%);
             -webkit-backdrop-filter: blur(8px) saturate(140%);
             border: 1px solid var(--border-color);
-            padding: 1.75rem; 
-            margin-bottom: 1.75rem;
+            padding: 1.25rem; /* Adjusted padding for mobile */
+            margin-bottom: 1.5rem; /* Adjusted margin */
             border-radius: 8px; 
             opacity: 0;
             transform: perspective(800px) rotateX(-6deg) translateY(20px);
@@ -188,28 +191,39 @@
         }
         .data-card h3 { 
             font-family: 'Roboto Mono', monospace;
-            font-size: 1.2rem; 
+            font-size: 1.1rem; /* Adjusted for mobile */
             font-weight: 500;
             color: var(--primary-color);
-            margin-bottom: 0.6rem; 
+            margin-bottom: 0.5rem; 
         }
-         .data-card ul { list-style-type: none; padding-left: 0; margin-top: 0.6rem; }
+         .data-card ul { list-style-type: none; padding-left: 0; margin-top: 0.5rem; }
         .data-card ul li {
-            font-size: 0.9rem; 
+            font-size: 0.85rem; /* Adjusted for mobile */
             color: var(--text-medium);
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.3rem;
             padding-left: 1.3em; 
             position: relative;
         }
         .data-card ul li::before { content: '»'; position: absolute; left: 0; color: var(--primary-color); font-weight: bold; }
-        .data-card p, .prose p { font-size: 0.95rem; color: var(--text-medium); margin-bottom: 1rem; }
+        .data-card p, .prose p { font-size: 0.9rem; color: var(--text-medium); margin-bottom: 0.8rem; } /* Adjusted for mobile */
+        
+        /* Tailwind Prose Overrides for Mobile if needed */
+        .prose { font-size: 0.9rem; } /* Base prose size for mobile */
+        .prose h4 { color: var(--accent-color); font-family: 'Roboto Mono', monospace; margin-top: 1.25em; font-size: 1em; }
         .prose strong { color: var(--primary-color); }
         .prose ul > li::before { background-color: var(--primary-color); } 
-        .prose h4 { color: var(--accent-color); font-family: 'Roboto Mono', monospace; margin-top: 1.5em;}
 
+
+        .tab-button-container { /* Added container for better flex control */
+            display: flex;
+            flex-wrap: wrap; /* Allow buttons to wrap */
+            justify-content: center;
+            gap: 0.5rem; /* Gap between buttons */
+            margin-bottom: 1.5rem; /* Adjusted margin */
+        }
         .tab-button { 
-            padding: 0.6rem 1.2rem;
-            margin: 0 0.25rem;
+            padding: 0.5rem 1rem; /* Adjusted padding */
+            /* margin: 0 0.25rem; Removed margin, using gap on container */
             border-radius: 6px;
             background-color: transparent;
             border: 2px solid var(--primary-color);
@@ -219,6 +233,14 @@
             font-family: 'Roboto Mono', monospace;
             transition: all 0.3s ease;
             letter-spacing: 0.5px;
+            font-size: 0.8rem; /* Adjusted for mobile */
+            flex-grow: 1; /* Allow buttons to grow if space allows */
+            text-align: center;
+        }
+        @media (min-width: 640px) { /* sm breakpoint */
+            .tab-button {
+                flex-grow: 0; /* Revert grow on larger screens */
+            }
         }
         .tab-button:hover {
             background-color: var(--primary-color);
@@ -236,18 +258,18 @@
         .tab-content.active { display: block; }
 
         table { border-collapse: separate; border-spacing: 0; width: 100%; }
-        th, td { padding: 0.75rem 0.9rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.9rem;}
-        thead th { background-color: rgba(22, 27, 34, 0.9); color: var(--primary-color); font-family: 'Roboto Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.4px; }
+        th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.8rem;} /* Adjusted padding & font-size */
+        thead th { background-color: rgba(22, 27, 34, 0.9); color: var(--primary-color); font-family: 'Roboto Mono', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.4px; } /* Adjusted font-size */
         tbody tr:nth-child(even) { background-color: rgba(22, 27, 34, 0.3); }
         tbody tr:hover { background-color: rgba(0, 207, 232, 0.04); }
-        .metric-value { color: var(--primary-color); font-weight: 500; font-size: 0.95rem; } 
+        .metric-value { color: var(--primary-color); font-weight: 500; font-size: 0.85rem; } 
         .text-accent-green { color: #28a745; } 
         .text-accent-red { color: #dc3545; } 
 
         .progress-bar-container { width: 100%; background-color: rgba(13,17,23,0.5); height: 3px; position: fixed; top: 0; left: 0; z-index: 1000; }
         .progress-bar { height: 3px; background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); width: 0%; transition: width 0.1s linear; }
         
-        footer { text-align: center; padding: 2.5rem 1rem 1.5rem 1rem; margin-top: 2.5rem; border-top: 1px solid var(--border-color); color: var(--text-dark); font-size: 0.8rem; }
+        footer { text-align: center; padding: 2rem 1rem 1.25rem 1rem; margin-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-dark); font-size: 0.75rem; } /* Adjusted padding & font-size */
         footer p span { font-family: 'Roboto Mono', monospace; color: var(--primary-color); }
         
         .img-custom-shadow {
@@ -255,16 +277,70 @@
             border-radius: 6px;
             border: 1px solid var(--border-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 100%; /* Ensure images are responsive */
+            height: auto; /* Maintain aspect ratio */
         }
         .img-custom-shadow:hover {
             transform: scale(1.015);
             box-shadow: 0 10px 30px -7px rgba(0,0,0,0.4), 0 0 15px -7px var(--glow-primary-subtle); 
         }
 
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; } /* Added height for horizontal scrollbars */
         ::-webkit-scrollbar-track { background: var(--bg-dark-primary); }
         ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; border: 2px solid var(--bg-dark-primary); }
         ::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }
+
+        /* Tailwind Responsive Overrides - Mobile First Approach */
+        /* Small devices (landscape phones, 576px and up) */
+        @media (min-width: 576px) {
+            .hero-project-title { font-size: 2rem; }
+            .hero-subtitle-text { font-size: 1.1rem; }
+            .section-title { font-size: 1.5rem; }
+        }
+
+        /* Medium devices (tablets, 768px and up) */
+        @media (min-width: 768px) {
+            .nav-links-container { flex-wrap: nowrap; gap: 0.5rem; } /* No wrap on larger screens */
+            .nav-link { font-size: 0.8rem; padding: 0.5rem 0.75rem; }
+            .hero-section { padding: 7rem 1.5rem 3rem 1.5rem; min-height: 80vh;}
+            .hero-project-title { font-size: 2.5rem; }
+            .hero-subtitle-text { font-size: 1.15rem; }
+            .hero-tagline-text { font-size: 0.85rem; }
+            .content-section { padding: 3.5rem 1rem 1.5rem 1rem; }
+            .section-title-wrapper { margin-bottom: 2.5rem; }
+            .section-title { font-size: 1.7rem; }
+            .data-card { padding: 1.75rem; margin-bottom: 1.75rem; }
+            .data-card h3 { font-size: 1.2rem; }
+            .data-card ul li { font-size: 0.9rem; }
+            .data-card p, .prose p { font-size: 0.95rem; margin-bottom: 1rem; }
+            .prose { font-size: 0.95rem; }
+            .prose h4 { font-size: 1.1em; }
+            .tab-button-container { margin-bottom: 2.5rem; }
+            .tab-button { font-size: 0.85rem; padding: 0.6rem 1.2rem;}
+            th, td { padding: 0.75rem 0.9rem; font-size: 0.9rem;}
+            thead th { font-size: 0.7rem; }
+            .metric-value { font-size: 0.95rem; }
+            footer { padding: 2.5rem 1rem 1.5rem 1rem; font-size: 0.8rem; }
+        }
+         /* Ensure prose classes from Tailwind are responsive */
+        .prose {
+            /* Default (mobile) */
+            font-size: 0.9rem; /* Example base size for mobile */
+            line-height: 1.6;
+        }
+        .prose h1 { font-size: 1.8em; margin-top: 1em; margin-bottom: 0.5em; }
+        .prose h2 { font-size: 1.5em; margin-top: 1em; margin-bottom: 0.5em; }
+        .prose h3 { font-size: 1.25em; margin-top: 1em; margin-bottom: 0.5em; }
+        .prose p { margin-bottom: 1em; }
+        .prose ul { margin-bottom: 1em; padding-left: 1.2em; }
+        .prose li { margin-bottom: 0.3em; }
+
+        @media (min-width: 768px) { /* md breakpoint */
+            .prose {
+                font-size: 1rem; /* Base size for larger screens */
+            }
+             /* You can add more specific prose adjustments for larger screens if needed */
+        }
 
     </style>
 </head>
@@ -290,12 +366,9 @@
         <p class="hero-tagline-text">Historical // EWMA // GARCH-RollCorr</p>
     </header>
 
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
-
-        <section id="challenge" class="content-section">
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10"> <section id="challenge" class="content-section">
             <div class="section-title-wrapper"><h2 class="section-title">The Problem: Static Risk in Dynamic Markets</h2></div>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="prose prose-lg text-gray-300 max-w-none">
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center"> <div class="prose text-gray-300 max-w-none">
                     <p>Effective portfolio management hinges on a precise understanding of asset interdependencies, quantified by the <strong>covariance matrix</strong>. Traditional finance often simplifies this by assuming static covariances.</p>
                     <p>However, financial markets are inherently dynamic:</p>
                     <ul>
@@ -305,40 +378,44 @@
                     <p>Neglecting these dynamics leads to flawed risk assessments and suboptimal investment strategies. This project confronts this by exploring models that adapt to changing market conditions.</p>
                 </div>
                 <div>
-                    <img src="images/adj_close_prices_plot.png" alt="NIFTY 50 Stock Price Trends" class="img-custom-shadow mx-auto">
+                    <img src="images/adj_close_prices_plot.png" 
+                         alt="NIFTY 50 Stock Price Trends" 
+                         class="img-custom-shadow mx-auto w-full h-auto object-cover rounded-md"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/161B22/E6EDF3?text=Price+Trends+Chart';">
                     <p class="text-center text-xs text-text-dark mt-3">Price trends of selected NIFTY 50 stocks (Jan 2010 - May 2025).</p>
                 </div>
             </div>
         </section>
 
-        <section id="approach" class="content-section bg-bg-dark-secondary rounded-lg py-12 my-12">
-            <div class="section-title-wrapper"><h2 class="section-title">Our Methodology: A Comparative Framework</h2></div>
-            <div class="prose prose-lg text-text-medium max-w-4xl mx-auto text-center">
+        <section id="approach" class="content-section bg-bg-dark-secondary rounded-lg py-8 md:py-12 my-8 md:my-12"> <div class="section-title-wrapper"><h2 class="section-title">Our Methodology: A Comparative Framework</h2></div>
+            <div class="prose text-text-medium max-w-4xl mx-auto text-center">
                 <p>We engineered a systematic pipeline to dissect the efficacy of three distinct covariance forecasting paradigms. The <strong>Global Minimum Variance (GMV)</strong> portfolio strategy served as our crucible, testing how each model's forecasts translate into risk-minimization performance within the Indian equity landscape (12 selected NIFTY 50 stocks, Jan 2010 - May 2025).</p>
             </div>
-            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="data-card is-visible"> 
-                    <h3 class="!text-accent-highlight">1. Data Foundation</h3>
+            <div class="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center"> <div class="data-card is-visible"> 
+                    <h3 class="!text-primary-color">1. Data Foundation</h3>
                     <p class="text-sm">Daily log returns, preprocessed for stationarity (ADF tests confirmed).</p>
                 </div>
                 <div class="data-card is-visible">
-                    <h3 class="!text-accent-highlight">2. Covariance Engines</h3>
+                    <h3 class="!text-primary-color">2. Covariance Engines</h3>
                     <p class="text-sm">Historical Rolling, EWMA (decay factor lambda, λ = 0.94), GARCH(1,1)-RollCorr (Student's t-dist, 60-day correlation window).</p>
                 </div>
                 <div class="data-card is-visible">
-                    <h3 class="!text-accent-highlight">3. Backtesting Rig</h3>
+                    <h3 class="!text-primary-color">3. Backtesting Rig</h3>
                     <p class="text-sm">GMV portfolios, monthly rebalancing. Metrics: Returns, Vol, Sharpe, Sortino, Calmar, Drawdown, Turnover.</p>
                 </div>
             </div>
-             <div class="mt-16 text-center fade-in-section is-visible" style="transition-delay: 0.5s;">
-                <img src="images/log_returns_timeseries.png" alt="Log Returns Volatility Clustering" class="img-custom-shadow mx-auto">
+             <div class="mt-10 md:mt-16 text-center fade-in-section is-visible" style="transition-delay: 0.5s;">
+                 <img src="images/log_returns_timeseries.png" 
+                     alt="Log Returns Volatility Clustering" 
+                     class="img-custom-shadow mx-auto w-full h-auto object-cover rounded-md"
+                     onerror="this.onerror=null; this.src='https://placehold.co/600x300/161B22/E6EDF3?text=Log+Returns+Chart';">
                 <p class="text-sm text-text-dark mt-4">Data Insight: Volatility clustering observed in daily log returns.</p>
             </div>
         </section>
 
         <section id="models" class="content-section">
             <div class="section-title-wrapper"><h2 class="section-title">Models Deconstructed</h2></div>
-            <div class="mb-10 flex flex-wrap justify-center gap-3">
+            <div class="tab-button-container mb-8 md:mb-10">
                 <button class="tab-button active" onclick="openTab(event, 'historical_model_tab')">Historical</button>
                 <button class="tab-button" onclick="openTab(event, 'ewma_model_tab')">EWMA</button>
                 <button class="tab-button" onclick="openTab(event, 'garch_model_tab')">GARCH-RollCorr</button>
@@ -355,16 +432,15 @@
             <div id="garch_model_tab" class="tab-content data-card">
                 <h3>GARCH-RollCorr Hybrid</h3>
                 <p>A two-stage model: 1) Univariate GARCH(1,1) for individual asset volatilities. 2) Rolling 60-day correlation on GARCH standardized residuals. Combines D<sub>t</sub>R<sub>t</sub>D<sub>t</sub> (where D<sub>t</sub> is the diagonal matrix of GARCH conditional volatilities and R<sub>t</sub> is the dynamic correlation matrix) for the final covariance. Captures volatility clustering and dynamic correlations.</p>
-            </div>
+                 </div>
         </section>
 
         <section id="results" class="content-section">
             <div class="section-title-wrapper"><h2 class="section-title">Empirical Performance & Insights</h2></div>
             
-            <div class="data-card mb-10">
+            <div class="data-card mb-8 md:mb-10">
                 <h3>GMV Portfolio: Comparative Metrics</h3>
-                <div class="overflow-x-auto mt-4">
-                    <table class="min-w-full">
+                <div class="overflow-x-auto mt-4 rounded-md"> <table class="min-w-full">
                         <thead>
                             <tr>
                                 <th>Strategy</th><th>Cum. Return</th><th>Ann. Return</th><th>Ann. Volatility</th>
@@ -390,28 +466,34 @@
                 <p class="text-xs text-text-dark mt-3 text-center">Risk-free rate assumed at 0%. Green indicates best for desirable metrics.</p>
             </div>
 
-            <div class="data-card mb-10">
+            <div class="data-card mb-8 md:mb-10">
                 <h3>Wealth Trajectories</h3>
-                <img src="images/gmv_cumulative_returns_comparison.png" alt="Cumulative Returns Plot of GMV Strategies" class="img-custom-shadow mx-auto">
+                 <img src="images/gmv_cumulative_returns_comparison.png" 
+                     alt="Cumulative Returns Plot of GMV Strategies" 
+                     class="img-custom-shadow mx-auto w-full h-auto object-cover rounded-md"
+                     onerror="this.onerror=null; this.src='https://placehold.co/600x400/161B22/E6EDF3?text=Wealth+Trajectories+Chart';">
                 <p class="mt-4 text-text-medium">The GARCH-RollCorr strategy, despite not having the highest terminal wealth, exhibited superior risk control, evidenced by the smallest maximum drawdown and highest Calmar ratio. Historical model led in final returns but with greater volatility.</p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="data-card">
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8"> <div class="data-card">
                     <h3>Portfolio Turnover</h3>
-                     <table class="min-w-full">
-                         <thead><tr><th>Strategy</th><th>Average Turnover</th></tr></thead>
-                        <tbody>
-                            <tr><td class="font-medium text-text-light">Historical</td><td class="metric-value text-sm">0.3998</td></tr>
-                            <tr><td class="font-medium text-text-light">EWMA</td><td class="metric-value text-sm">0.6323</td></tr>
-                            <tr><td class="font-medium text-text-light">GARCH-RollCorr</td><td class="metric-value text-sm">0.4615</td></tr>
-                        </tbody>
-                    </table>
+                     <div class="overflow-x-auto rounded-md"> <table class="min-w-full">
+                            <thead><tr><th>Strategy</th><th>Average Turnover</th></tr></thead>
+                            <tbody>
+                                <tr><td class="font-medium text-text-light">Historical</td><td class="metric-value text-sm">0.3998</td></tr>
+                                <tr><td class="font-medium text-text-light">EWMA</td><td class="metric-value text-sm">0.6323</td></tr>
+                                <tr><td class="font-medium text-text-light">GARCH-RollCorr</td><td class="metric-value text-sm">0.4615</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <p class="mt-3 text-text-medium">EWMA showed the highest turnover, implying higher potential transaction costs. Historical was the most stable.</p>
                 </div>
                 <div class="data-card">
                     <h3>Weight Allocation Dynamics</h3>
-                    <img src="images/GARCH_RollCorr_weights_allocation.png" alt="Example Weight Allocation for GARCH-RollCorr Strategy" class="img-custom-shadow mx-auto mb-3">
+                     <img src="images/GARCH_RollCorr_weights_allocation.png" 
+                         alt="Example Weight Allocation for GARCH-RollCorr Strategy" 
+                         class="img-custom-shadow mx-auto mb-3 w-full h-auto object-cover rounded-md"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/161B22/E6EDF3?text=Weight+Allocation+Chart';">
                     <p class="mt-3 text-text-medium">The GARCH-RollCorr model (example shown) often adapted weights more dynamically, reflecting its responsiveness to changing risk estimates. Short positions were utilized by all unconstrained GMV strategies. (Note: Other weight allocation plots can be found in the 'images' folder: Historical_weights_allocation.png, EWMA_weights_allocation.png).</p>
                 </div>
             </div>
@@ -419,7 +501,7 @@
 
         <section id="conclusion" class="content-section">
             <div class="section-title-wrapper"><h2 class="section-title">Conclusion & Future Horizons</h2></div>
-            <div class="data-card prose prose-lg text-text-medium max-w-3xl mx-auto prose-strong:text-primary-color prose-headings:text-accent-highlight prose-ul:marker:text-primary-color">
+            <div class="data-card prose prose-base md:prose-lg text-text-medium max-w-3xl mx-auto prose-strong:text-primary-color prose-headings:text-primary-color prose-ul:marker:text-primary-color">
                 <h4>Key Takeaways</h4>
                 <p>Model selection in dynamic covariance forecasting critically influences portfolio risk-return outcomes. The GARCH-RollCorr model emerged as a strong contender for risk-averse strategies due to its superior drawdown control and volatility management. The simpler Historical model, while achieving high returns, did so with greater risk and lower turnover.</p>
                 <h4>Limitations</h4>
@@ -436,7 +518,7 @@
     </main>
 
     <footer>
-        <p>&copy; <span id="currentYear"></span> Siddhant Bashisth - Quantitative Finance Project</p>
+        <p>&copy; <span id="currentYear"></span> [Your Name] - Quantitative Finance Project</p>
         <p>System Status: <span>ONLINE</span> // Data Stream: <span>STABLE</span> // Analysis Engine: <span>OPTIMIZED</span></p>
     </footer>
 
@@ -447,6 +529,10 @@
             tabcontent = document.getElementsByClassName("tab-content");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].classList.remove("active");
+                // Ensure data-cards within tabs also reset their visibility for animation
+                if (tabcontent[i].classList.contains('data-card')) {
+                    tabcontent[i].classList.remove('is-visible');
+                }
             }
             tabbuttons = document.getElementsByClassName("tab-button");
             for (i = 0; i < tabbuttons.length; i++) {
@@ -455,6 +541,12 @@
             const targetTab = document.getElementById(tabName);
             if (targetTab) { 
                 targetTab.classList.add("active");
+                // Trigger visibility for animation
+                setTimeout(() => {
+                    if (targetTab.classList.contains('data-card')) {
+                         targetTab.classList.add('is-visible');
+                    }
+                }, 50); // Small delay to ensure class change is registered for animation
             }
             if (event && event.currentTarget) { 
                  event.currentTarget.classList.add("active");
@@ -471,6 +563,10 @@
                         const targetTab = document.getElementById(tabId);
                         if (targetTab) {
                             targetTab.classList.add('active');
+                             // Trigger visibility for animation on load for the default active tab
+                            if (targetTab.classList.contains('data-card')) {
+                                targetTab.classList.add('is-visible');
+                            }
                         }
                     }
                 }
@@ -481,18 +577,24 @@
             }
         });
 
-        // Intersection Observer for scroll animations (inspired by your example)
-        const animatedElements = document.querySelectorAll('.content-section, .hero-section, .data-card, .section-title');
+        // Intersection Observer for scroll animations
+        const animatedElements = document.querySelectorAll('.content-section, .hero-section, .data-card:not(.tab-content), .section-title, .fade-in-section'); // Exclude tab-content data-cards from initial observation
         const observerOptions = { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 };
         
         const elementObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible'); 
+                    // No need to unobserve for these types of animations
                 }
             });
         }, observerOptions);
-        animatedElements.forEach(el => { elementObserver.observe(el); });
+        animatedElements.forEach(el => { 
+            // For elements that are part of tabs, their visibility is handled by openTab
+            if (!el.classList.contains('tab-content')) {
+                elementObserver.observe(el); 
+            }
+        });
         
         // Scroll progress bar
         window.onscroll = function() {updateProgressBar()};
@@ -506,7 +608,7 @@
             }
         }
 
-        // Smooth scroll & Active Nav Link (inspired by your example)
+        // Smooth scroll & Active Nav Link
         const navLinks = document.querySelectorAll('.main-nav .nav-link');
         const mainNav = document.querySelector('.main-nav');
         let navHeight = mainNav ? mainNav.offsetHeight : 60; 
@@ -514,7 +616,7 @@
         navLinks.forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                navHeight = mainNav ? mainNav.offsetHeight : 60;
+                navHeight = mainNav ? mainNav.offsetHeight : 60; // Recalculate navHeight on click
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
@@ -529,18 +631,50 @@
             });
         });
         
-        const contentSectionsForNav = document.querySelectorAll('.hero-section, .content-section'); 
+        const contentSectionsForNav = document.querySelectorAll('#hero, .content-section'); // Include hero for nav highlighting
         function updateActiveNavLink() {
-            navHeight = mainNav ? mainNav.offsetHeight : 60;
+            navHeight = mainNav ? mainNav.offsetHeight : 60; // Recalculate navHeight on scroll/resize
             let currentSectionId = '';
-            let heroSection = document.getElementById('hero'); 
-            let firstContentSection = document.querySelector('.content-section'); 
+            
+            // Special handling for the hero section
+            const heroSection = document.getElementById('hero');
+            const firstContentSectionAfterHero = document.querySelector('.content-section:not(#hero)'); // Get the first actual content section
 
-            if (heroSection && window.scrollY < (firstContentSection ? firstContentSection.offsetTop - navHeight - 50 : window.innerHeight / 2)) {
-                 currentSectionId = (navLinks.length > 0) ? navLinks[0].getAttribute('href') : ''; 
+            if (heroSection && window.scrollY < (firstContentSectionAfterHero ? firstContentSectionAfterHero.offsetTop - navHeight - 100 : window.innerHeight / 2) ) {
+                 // If we are close to the top or in the hero section, make the first nav link active (assuming it links to hero or first section)
+                 // The first nav link might be "Challenge" which is after Hero.
+                 // Let's find the link that corresponds to #hero or the first conceptual section.
+                 // For this page, the first link is "Challenge", but hero is the top.
+                 // We'll default to making the first nav link active if no other section matches.
+                 // Or, if a link explicitly points to #hero, make that active.
+                 // For now, if we are above the first "content-section", we assume it's the hero context.
+                 // The links are Challenge, Methodology etc. There's no explicit "Home" or "Hero" link.
+                 // So, if we are scrolled near the top, "Challenge" (the first link) should be active.
+                 // The logic needs to check if the scroll is before the first actual section linked in nav.
+
+                let foundActive = false;
+                contentSectionsForNav.forEach(section => {
+                    const sectionTop = section.offsetTop - navHeight - 100; // Adjusted offset for earlier activation
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                        currentSectionId = '#' + section.id;
+                        foundActive = true;
+                    }
+                });
+                // If still near top and no section matched (e.g. hero is very tall), make first link active
+                if (!foundActive && window.scrollY < (firstContentSectionAfterHero ? firstContentSectionAfterHero.offsetTop - navHeight - 100 : window.innerHeight / 2)) {
+                    if (navLinks.length > 0 && navLinks[0].getAttribute('href') === '#challenge') { // Assuming first link is #challenge
+                         // If hero is very tall, and we are still in hero section but before #challenge,
+                         // we might want to keep #challenge active or no link active.
+                         // Let's make #challenge active if we are in the hero visual space.
+                         currentSectionId = '#challenge'; // Default to first link if in hero area
+                    }
+                }
+
+
             } else {
                 contentSectionsForNav.forEach(section => {
-                    const sectionTop = section.offsetTop - navHeight - 50; 
+                    const sectionTop = section.offsetTop - navHeight - 50; // Standard offset
                     if (window.scrollY >= sectionTop) {
                         currentSectionId = '#' + section.id;
                     }
@@ -558,21 +692,27 @@
         window.addEventListener('resize', () => { 
             navHeight = mainNav ? mainNav.offsetHeight : 60; 
             updateActiveNavLink(); 
+            setCanvasSizeAndParticles(); // Also update canvas on resize
         });
-        updateActiveNavLink(); 
+        updateActiveNavLink(); // Initial call
 
-        // Particle Canvas Background (inspired by your example)
+        // Particle Canvas Background
         const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
         let particlesArray = [];
-        let deviceIsComputer = window.innerWidth > 768; 
-        let numberOfParticles = deviceIsComputer ? Math.min(80, Math.floor(window.innerWidth / 30)) : Math.min(30, Math.floor(window.innerWidth / 30));
+        let deviceIsComputer; 
+        let numberOfParticles;
 
         function setCanvasSizeAndParticles() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             deviceIsComputer = window.innerWidth > 768;
-            numberOfParticles = deviceIsComputer ? Math.min(80, Math.floor(window.innerWidth / 30)) : Math.min(30, Math.floor(window.innerWidth / 30));
+            // Further reduce particles on very small screens for performance
+            if (window.innerWidth < 480) {
+                numberOfParticles = Math.min(15, Math.floor(window.innerWidth / 30));
+            } else {
+                numberOfParticles = deviceIsComputer ? Math.min(60, Math.floor(window.innerWidth / 35)) : Math.min(25, Math.floor(window.innerWidth / 30)); // Adjusted particle counts
+            }
             initParticles();
         }
         
@@ -580,26 +720,27 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * (deviceIsComputer ? 1.6 : 1.1) + 0.3;
-                this.speedX = (Math.random() * 0.3 - 0.15); 
-                this.speedY = (Math.random() * 0.3 - 0.15);
-                this.color = `rgba(0, 207, 232, ${Math.random() * 0.2 + 0.05})`; 
+                this.size = Math.random() * (deviceIsComputer ? 1.5 : 1.0) + 0.2; // Adjusted sizes
+                this.speedX = (Math.random() * 0.25 - 0.125); // Slightly slower speeds
+                this.speedY = (Math.random() * 0.25 - 0.125);
+                this.color = `rgba(0, 207, 232, ${Math.random() * 0.15 + 0.03})`; // More subtle alpha
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                if (this.size > 0.05) this.size -= 0.002;
-                if (this.size <= 0.05) { 
+                if (this.size > 0.03) this.size -= 0.0015; // Slower shrink
+                if (this.size <= 0.03) { 
                     this.x = Math.random() * canvas.width; 
                     this.y = Math.random() * canvas.height; 
-                    this.size = Math.random() * (deviceIsComputer ? 1.6 : 1.1) + 0.3;
-                    this.speedX = (Math.random() * 0.3 - 0.15); 
-                    this.speedY = (Math.random() * 0.3 - 0.15);
+                    this.size = Math.random() * (deviceIsComputer ? 1.5 : 1.0) + 0.2;
+                    this.speedX = (Math.random() * 0.25 - 0.125); 
+                    this.speedY = (Math.random() * 0.25 - 0.125);
                 }
+                // Boundary checks (wrap around)
                 if (this.x < -this.size) this.x = canvas.width + this.size;
-                if (this.x > canvas.width + this.size) this.x = -this.size;
+                else if (this.x > canvas.width + this.size) this.x = -this.size;
                 if (this.y < -this.size) this.y = canvas.height + this.size;
-                if (this.y > canvas.height + this.size) this.y = -this.size;
+                else if (this.y > canvas.height + this.size) this.y = -this.size;
             }
             draw() {
                 ctx.fillStyle = this.color;
@@ -618,14 +759,14 @@
         
         function connectParticles() {
             let opacityValue;
-            const maxConnectDistance = deviceIsComputer ? Math.min(100, window.innerWidth / 10) : Math.min(60, window.innerWidth / 8);
+            const maxConnectDistance = deviceIsComputer ? Math.min(90, window.innerWidth / 12) : Math.min(50, window.innerWidth / 10); // Adjusted distances
             for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a + 1; b < particlesArray.length; b++) {
+                for (let b = a + 1; b < particlesArray.length; b++) { // Start b from a + 1 to avoid re-calculating and self-connection
                     let distance = Math.hypot(particlesArray[a].x - particlesArray[b].x, particlesArray[a].y - particlesArray[b].y);
                     if (distance < maxConnectDistance) {
                         opacityValue = 1 - (distance / maxConnectDistance);
-                        ctx.strokeStyle = `rgba(160, 32, 240, ${opacityValue * (deviceIsComputer ? 0.15 : 0.1)})`; 
-                        ctx.lineWidth = deviceIsComputer ? 0.2 : 0.1;
+                        ctx.strokeStyle = `rgba(160, 32, 240, ${opacityValue * (deviceIsComputer ? 0.12 : 0.08)})`; // More subtle lines
+                        ctx.lineWidth = deviceIsComputer ? 0.15 : 0.08; // Thinner lines
                         ctx.beginPath();
                         ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
                         ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
@@ -635,6 +776,7 @@
             }
         }
 
+        let animationFrameId;
         function animateCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < particlesArray.length; i++) {
@@ -642,13 +784,36 @@
                 particlesArray[i].draw();
             }
             connectParticles();
-            requestAnimationFrame(animateCanvas);
+            animationFrameId = requestAnimationFrame(animateCanvas);
         }
         
-        setCanvasSizeAndParticles(); // Initial setup
+        // Initial setup
+        // Ensure canvas setup and animation start after DOM is ready
+        // and potentially after a small delay if performance is an issue on load.
+        // The DOMContentLoaded listener above handles some initial setup.
+        // Particle canvas can be initialized here or within DOMContentLoaded.
+        
+        // Call on load and resize
+        setCanvasSizeAndParticles(); 
+        
+        // Stop previous animation frame before starting a new one if resizing
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
         animateCanvas();
         
-        window.addEventListener('resize', setCanvasSizeAndParticles);
+        // Ensure resize listener for canvas is robust
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+                setCanvasSizeAndParticles();
+                animateCanvas(); // Restart animation with new sizes
+            }, 250); // Debounce resize event
+        });
 
     </script>
 </body>
